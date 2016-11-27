@@ -42,14 +42,12 @@
   float: left;
   width: 200px;
 }
-
-/* line 48, ../sass/styles.scss */
+/* line 47, ../sass/styles.scss */
 #navigationMenu ul {
   list-style: none;
   padding: 0px;
 }
-
-/* line 53, ../sass/styles.scss */
+/* line 51, ../sass/styles.scss */
 #navigationMenu ul li {
   display: block;
   width: 200px;
@@ -66,8 +64,7 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
-/* line 70, ../sass/styles.scss */
+/* line 67, ../sass/styles.scss */
 #navigationMenu ul li:hover {
   color: red;
   background-color: #547c80;
@@ -92,24 +89,24 @@
   height: 230px;
   width: 200px;
   overflow: hidden;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  -moz-border-radius: 5px / 5px;
+  -webkit-border-radius: 5px 5px;
+  border-radius: 5px / 5px;
   text-align: center;
   position: relative;
 }
 /* line 97, ../sass/styles.scss */
-#productList ul lihover {
+#productList ul li:hover {
   background-color: #aaaaaa;
   background-image: url("images/cart.png");
 }
 /* line 101, ../sass/styles.scss */
-#productList ul lihover div.addOrRemove {
+#productList ul li:hover div.addOrRemove {
   background-color: rgba(0, 0, 0, 0.5);
   display: block;
 }
 /* line 106, ../sass/styles.scss */
-#productList ul lihover .price {
+#productList ul li:hover .price {
   display: block;
 }
 /* line 111, ../sass/styles.scss */
@@ -133,15 +130,15 @@
   opacity: 0.4;
   color: white;
   display: none;
-  -webkit-border-bottom-right-radius: 5px;
-  -webkit-border-bottom-left-radius: 5px;
   -moz-border-radius-bottomright: 5px;
-  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
   border-bottom-left-radius: 5px;
   text-align: center;
 }
-/* line 140, ../sass/styles.scss */
+/* line 139, ../sass/styles.scss */
 #productList ul li div.addOrRemove {
   overflow: hidden;
   position: absolute;
@@ -150,14 +147,14 @@
   height: 170px;
   display: none;
 }
-/* line 148, ../sass/styles.scss */
+/* line 147, ../sass/styles.scss */
 #productList ul li div.addOrRemove .cart {
   width: inherit;
   height: inherit;
   opacity: 0.5;
   z-index: 0;
 }
-/* line 155, ../sass/styles.scss */
+/* line 154, ../sass/styles.scss */
 #productList ul li div.addOrRemove button.add {
   background-color: green;
   color: white;
@@ -169,7 +166,7 @@
   cursor: pointer;
   box-shadow: 0px 0px 3px orange;
 }
-/* line 167, ../sass/styles.scss */
+/* line 166, ../sass/styles.scss */
 #productList ul li div.addOrRemove button.remove {
   background-color: red;
   color: white;
@@ -182,7 +179,7 @@
   box-shadow: 0px 0px 3px orange;
 }
 
-/* line 183, ../sass/styles.scss */
+/* line 182, ../sass/styles.scss */
 #footer {
   text-align: center;
   color: #2e6680;
