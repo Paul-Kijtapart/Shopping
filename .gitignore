@@ -15,4 +15,7 @@ build
 .env
 npm-debug.log
 
+# sass info
+config.rb
+
 
