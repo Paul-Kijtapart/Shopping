@@ -26,13 +26,13 @@ var ProductItem = function (_React$Component) {
     key: "addToCart",
     value: function addToCart() {
       // Update cart && Re-set inactivetime
-      this.props.onCartAdded();
+      this.props.onCartAdded(this.props.name);
     }
   }, {
     key: "removeFromCart",
     value: function removeFromCart() {
       // Update cart && Re-set inactivetime
-      this.props.onCartRemoved();
+      this.props.onCartRemoved(this.props.name);
     }
   }, {
     key: "render",
@@ -99,29 +99,23 @@ var ShoppingApp = function (_React$Component2) {
     key: "tick",
     value: function tick() {
       // update inactiveTime
-      this.setState(function (prevState, props) {
-        return {
-          inactiveTime: prevState.inactiveTime + 1000
-        };
-      });
-      console.log(this.state.inactiveTime);
-
-      // if inactiveTime hit 30seconds, alert user
-      if (this.state.inactiveTime >= this.props.timer) {
-        this.setState({
-          inactiveTime: 0
-        });
+      var inactiveTime = this.state.inactiveTime;
+      inactiveTime += 1000;
+      if (inactiveTime >= this.props.timeLimit) {
+        inactiveTime = 0;
         alert("Hey there! Are you still planning to buy something?");
       }
+
+      this.setState({
+        inactiveTime: inactiveTime
+      });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
-
-      this.interval = setInterval(function () {
-        return _this3.tick();
-      }, 1000);
+      // this.interval = setInterval(
+      //   () => this.tick(),
+      //   1000);
     }
   }, {
     key: "componentWillUnmount",
@@ -130,17 +124,38 @@ var ShoppingApp = function (_React$Component2) {
     }
   }, {
     key: "handleRemoveFromCart",
-    value: function handleRemoveFromCart() {
+    value: function handleRemoveFromCart(productName) {
+      var cart = this.state.cart;
+      if (productName in cart && cart[productName] > 0) {
+        cart[productName]--;
+      }
+
       this.setState({
-        inactiveTime: 0
+        inactiveTime: 0,
+        cart: cart
       });
+
+      console.log("removeFromCart");
+      console.log(cart);
     }
   }, {
     key: "handleAddToCart",
-    value: function handleAddToCart() {
+    value: function handleAddToCart(productName) {
+      var cart = this.state.cart;
+      if (!(productName in cart)) {
+        cart[productName] = 1;
+      } else {
+        cart[productName]++;
+      }
+
       this.setState({
-        inactiveTime: 0
+        inactiveTime: 0,
+        cart: cart
       });
+
+      console.log("addToCart");
+      console.log(cart);
+      // debugger;
     }
   }, {
     key: "render",
@@ -435,9 +450,9 @@ var products = {
 
 // { "productName" : 0 }
 var cart = {};
-var timer = 10000;
+var timeLimit = 10000;
 
 ReactDOM.render(React.createElement(ShoppingApp, {
   products: products,
-  timer: timer
+  timeLimit: timeLimit
 }), document.getElementById('root'));

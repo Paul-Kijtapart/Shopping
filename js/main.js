@@ -9,12 +9,12 @@ class ProductItem extends React.Component {
 
   addToCart() {
     // Update cart && Re-set inactivetime
-    this.props.onCartAdded();
+    this.props.onCartAdded(this.props.name);
   }
 
   removeFromCart() {
     // Update cart && Re-set inactivetime
-    this.props.onCartRemoved();
+    this.props.onCartRemoved(this.props.name);
   }
 
   render() {
@@ -50,41 +50,59 @@ class ShoppingApp extends React.Component {
 
   tick() {
     // update inactiveTime
-    this.setState(
-      (prevState, props) => ({
-        inactiveTime: prevState.inactiveTime + 1000
-      }));
-    console.log(this.state.inactiveTime)
-
-    // if inactiveTime hit 30seconds, alert user
-    if (this.state.inactiveTime >= this.props.timer) {
-      this.setState({
-        inactiveTime: 0
-      });
+    let inactiveTime = this.state.inactiveTime;
+    inactiveTime += 1000;
+    if (inactiveTime >= this.props.timeLimit) {
+      inactiveTime = 0;
       alert("Hey there! Are you still planning to buy something?");
     }
+
+    this.setState({
+      inactiveTime: inactiveTime
+    });
   }
 
   componentDidMount() {
-    this.interval = setInterval(
-      () => this.tick(),
-      1000);
+    // this.interval = setInterval(
+    //   () => this.tick(),
+    //   1000);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  handleRemoveFromCart() {
+  handleRemoveFromCart(productName) {
+    let cart = this.state.cart;
+    if ((productName in cart) && cart[productName] > 0) {
+      cart[productName]--;
+    }
+
     this.setState({
-      inactiveTime: 0
+      inactiveTime: 0,
+      cart: cart
     });
+
+    console.log("removeFromCart");
+    console.log(cart);
   }
 
-  handleAddToCart() {
+  handleAddToCart(productName) {
+    let cart = this.state.cart;
+    if (!(productName in cart)) {
+      cart[productName] = 1;
+    } else {
+      cart[productName]++;
+    }
+
     this.setState({
-      inactiveTime: 0
+      inactiveTime: 0,
+      cart: cart
     });
+
+    console.log("addToCart");
+    console.log(cart);
+    // debugger;
   }
 
   render() {
@@ -269,12 +287,12 @@ var products = {
 
 // { "productName" : 0 }
 var cart = {};
-var timer = 10000;
+var timeLimit = 10000;
 
 ReactDOM.render(
   <ShoppingApp 
   products={products}
-  timer={timer}
+  timeLimit={timeLimit}
   />,
   document.getElementById('root')
 );
