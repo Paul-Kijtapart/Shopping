@@ -12,13 +12,29 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ProductItem = function (_React$Component) {
   _inherits(ProductItem, _React$Component);
 
-  function ProductItem() {
+  function ProductItem(props) {
     _classCallCheck(this, ProductItem);
 
-    return _possibleConstructorReturn(this, (ProductItem.__proto__ || Object.getPrototypeOf(ProductItem)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (ProductItem.__proto__ || Object.getPrototypeOf(ProductItem)).call(this, props));
+
+    _this.addToCart = _this.addToCart.bind(_this);
+    _this.removeFromCart = _this.removeFromCart.bind(_this);
+    return _this;
   }
 
   _createClass(ProductItem, [{
+    key: "addToCart",
+    value: function addToCart() {
+      // Update cart && Re-set inactivetime
+      this.props.onCartAdded();
+    }
+  }, {
+    key: "removeFromCart",
+    value: function removeFromCart() {
+      // Update cart && Re-set inactivetime
+      this.props.onCartRemoved();
+    }
+  }, {
     key: "render",
     value: function render() {
       return React.createElement(
@@ -30,12 +46,12 @@ var ProductItem = function (_React$Component) {
           { className: "addOrRemove" },
           React.createElement(
             "button",
-            { className: "add" },
+            { className: "add", onClick: this.addToCart },
             " Add "
           ),
           React.createElement(
             "button",
-            { className: "remove" },
+            { className: "remove", onClick: this.removeFromCart },
             " Remove "
           ),
           React.createElement("img", { className: "cart", src: "images/cart.png" })
@@ -58,11 +74,99 @@ var ProductItem = function (_React$Component) {
   return ProductItem;
 }(React.Component);
 
+// APP
+
+
+var ShoppingApp = function (_React$Component2) {
+  _inherits(ShoppingApp, _React$Component2);
+
+  function ShoppingApp(props) {
+    _classCallCheck(this, ShoppingApp);
+
+    var _this2 = _possibleConstructorReturn(this, (ShoppingApp.__proto__ || Object.getPrototypeOf(ShoppingApp)).call(this, props));
+
+    _this2.state = {
+      inactiveTime: 0,
+      cart: {}
+    };
+
+    _this2.handleAddToCart = _this2.handleAddToCart.bind(_this2);
+    _this2.handleRemoveFromCart = _this2.handleRemoveFromCart.bind(_this2);
+    return _this2;
+  }
+
+  _createClass(ShoppingApp, [{
+    key: "tick",
+    value: function tick() {
+      // update inactiveTime
+      this.setState(function (prevState, props) {
+        return {
+          inactiveTime: prevState.inactiveTime + 1000
+        };
+      });
+      console.log(this.state.inactiveTime);
+
+      // if inactiveTime hit 30seconds, alert user
+      if (this.state.inactiveTime >= this.props.timer) {
+        this.setState({
+          inactiveTime: 0
+        });
+        alert("Hey there! Are you still planning to buy something?");
+      }
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      this.interval = setInterval(function () {
+        return _this3.tick();
+      }, 1000);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearInterval(this.interval);
+    }
+  }, {
+    key: "handleRemoveFromCart",
+    value: function handleRemoveFromCart() {
+      this.setState({
+        inactiveTime: 0
+      });
+    }
+  }, {
+    key: "handleAddToCart",
+    value: function handleAddToCart() {
+      this.setState({
+        inactiveTime: 0
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        null,
+        React.createElement(Header, null),
+        React.createElement(MainContent, {
+          products: this.props.products,
+          onCartAdded: this.handleAddToCart,
+          onCartRemoved: this.handleRemoveFromCart
+        }),
+        React.createElement(Footer, null)
+      );
+    }
+  }]);
+
+  return ShoppingApp;
+}(React.Component);
+
 // ShoppingApp > MainContent > ProductList
 
 
-var ProductList = function (_React$Component2) {
-  _inherits(ProductList, _React$Component2);
+var ProductList = function (_React$Component3) {
+  _inherits(ProductList, _React$Component3);
 
   function ProductList() {
     _classCallCheck(this, ProductList);
@@ -74,7 +178,7 @@ var ProductList = function (_React$Component2) {
     key: "render",
     value: function render() {
       var products = this.props.products;
-      console.log(products);
+      // console.log(products);
 
       var productItems = [];
 
@@ -85,11 +189,13 @@ var ProductList = function (_React$Component2) {
           name: productName,
           price: product.price,
           url: product.url,
-          quantity: product.quantity
+          quantity: product.quantity,
+          onCartAdded: this.props.onCartAdded,
+          onCartRemoved: this.props.onCartRemoved
         }));
       }
 
-      console.log(productItems);
+      // console.log(productItems);
 
       // Convert original products to React product
 
@@ -111,8 +217,8 @@ var ProductList = function (_React$Component2) {
 // ShoppingApp > MainContent > Navigation
 
 
-var Navigation = function (_React$Component3) {
-  _inherits(Navigation, _React$Component3);
+var Navigation = function (_React$Component4) {
+  _inherits(Navigation, _React$Component4);
 
   function Navigation() {
     _classCallCheck(this, Navigation);
@@ -175,8 +281,8 @@ var Navigation = function (_React$Component3) {
 // ShoppingApp > MainContent
 
 
-var MainContent = function (_React$Component4) {
-  _inherits(MainContent, _React$Component4);
+var MainContent = function (_React$Component5) {
+  _inherits(MainContent, _React$Component5);
 
   function MainContent() {
     _classCallCheck(this, MainContent);
@@ -191,7 +297,11 @@ var MainContent = function (_React$Component4) {
         "div",
         { id: "mainContent" },
         React.createElement(Navigation, null),
-        React.createElement(ProductList, { products: this.props.products })
+        React.createElement(ProductList, {
+          products: this.props.products,
+          onCartAdded: this.props.onCartAdded,
+          onCartRemoved: this.props.onCartRemoved
+        })
       );
     }
   }]);
@@ -202,8 +312,8 @@ var MainContent = function (_React$Component4) {
 // ShoppingApp > Header
 
 
-var Header = function (_React$Component5) {
-  _inherits(Header, _React$Component5);
+var Header = function (_React$Component6) {
+  _inherits(Header, _React$Component6);
 
   function Header() {
     _classCallCheck(this, Header);
@@ -237,8 +347,8 @@ var Header = function (_React$Component5) {
 // ShoppingApp > Footer
 
 
-var Footer = function (_React$Component6) {
-  _inherits(Footer, _React$Component6);
+var Footer = function (_React$Component7) {
+  _inherits(Footer, _React$Component7);
 
   function Footer() {
     _classCallCheck(this, Footer);
@@ -258,31 +368,6 @@ var Footer = function (_React$Component6) {
   }]);
 
   return Footer;
-}(React.Component);
-
-var ShoppingApp = function (_React$Component7) {
-  _inherits(ShoppingApp, _React$Component7);
-
-  function ShoppingApp() {
-    _classCallCheck(this, ShoppingApp);
-
-    return _possibleConstructorReturn(this, (ShoppingApp.__proto__ || Object.getPrototypeOf(ShoppingApp)).apply(this, arguments));
-  }
-
-  _createClass(ShoppingApp, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "div",
-        null,
-        React.createElement(Header, null),
-        React.createElement(MainContent, { products: this.props.products }),
-        React.createElement(Footer, null)
-      );
-    }
-  }]);
-
-  return ShoppingApp;
 }(React.Component);
 
 var products = {
@@ -350,5 +435,9 @@ var products = {
 
 // { "productName" : 0 }
 var cart = {};
+var timer = 10000;
 
-ReactDOM.render(React.createElement(ShoppingApp, { products: products }), document.getElementById('root'));
+ReactDOM.render(React.createElement(ShoppingApp, {
+  products: products,
+  timer: timer
+}), document.getElementById('root'));

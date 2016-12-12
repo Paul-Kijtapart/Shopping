@@ -1,12 +1,29 @@
 // ShoppingApp > MainContent > ProductList > ProductItem
 class ProductItem extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.addToCart = this.addToCart.bind(this);
+    this.removeFromCart = this.removeFromCart.bind(this);
+  }
+
+  addToCart() {
+    // Update cart && Re-set inactivetime
+    this.props.onCartAdded();
+  }
+
+  removeFromCart() {
+    // Update cart && Re-set inactivetime
+    this.props.onCartRemoved();
+  }
+
   render() {
     return (
       <li>
           <img className="product" src={this.props.url} />
           <div className="addOrRemove">
-              <button className="add"> Add </button>
-              <button className="remove"> Remove </button>
+              <button className="add" onClick={this.addToCart}> Add </button>
+              <button className="remove" onClick={this.removeFromCart}> Remove </button>
               <img className="cart" src="images/cart.png" />
           </div>
           <div className="price">
@@ -18,11 +35,78 @@ class ProductItem extends React.Component {
   }
 }
 
+// APP
+class ShoppingApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inactiveTime: 0,
+      cart: {}
+    };
+
+    this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this);
+  }
+
+  tick() {
+    // update inactiveTime
+    this.setState(
+      (prevState, props) => ({
+        inactiveTime: prevState.inactiveTime + 1000
+      }));
+    console.log(this.state.inactiveTime)
+
+    // if inactiveTime hit 30seconds, alert user
+    if (this.state.inactiveTime >= this.props.timer) {
+      this.setState({
+        inactiveTime: 0
+      });
+      alert("Hey there! Are you still planning to buy something?");
+    }
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(
+      () => this.tick(),
+      1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  handleRemoveFromCart() {
+    this.setState({
+      inactiveTime: 0
+    });
+  }
+
+  handleAddToCart() {
+    this.setState({
+      inactiveTime: 0
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Header />
+        <MainContent 
+        products={this.props.products} 
+        onCartAdded={this.handleAddToCart}
+        onCartRemoved={this.handleRemoveFromCart}
+        />
+        <Footer />
+      </div>
+    );
+  }
+}
+
 // ShoppingApp > MainContent > ProductList
 class ProductList extends React.Component {
   render() {
     const products = this.props.products;
-    console.log(products);
+    // console.log(products);
 
     let productItems = [];
 
@@ -34,10 +118,12 @@ class ProductList extends React.Component {
       price={product.price} 
       url={product.url}
       quantity={product.quantity}
+      onCartAdded={this.props.onCartAdded}
+      onCartRemoved={this.props.onCartRemoved}
       />);
     }
 
-    console.log(productItems);
+    // console.log(productItems);
 
     // Convert original products to React product
 
@@ -78,7 +164,11 @@ class MainContent extends React.Component {
     return (
       <div id="mainContent">
         <Navigation />
-        <ProductList products={this.props.products}/>
+        <ProductList 
+        products={this.props.products}
+        onCartAdded={this.props.onCartAdded}
+        onCartRemoved={this.props.onCartRemoved}
+        />
       </div>
     );
   }
@@ -113,17 +203,6 @@ class Footer extends React.Component {
 }
 
 
-class ShoppingApp extends React.Component {
-  render() {
-    return (
-      <div>
-        <Header />
-        <MainContent products={this.props.products} />
-        <Footer />
-      </div>
-    );
-  }
-}
 
 var products = {
   "KeyboardCombo": {
@@ -190,8 +269,12 @@ var products = {
 
 // { "productName" : 0 }
 var cart = {};
+var timer = 10000;
 
 ReactDOM.render(
-  <ShoppingApp products={products}/>,
+  <ShoppingApp 
+  products={products}
+  timer={timer}
+  />,
   document.getElementById('root')
 );
