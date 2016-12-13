@@ -18,4 +18,6 @@ npm-debug.log
 # sass info
 config.rb
 
-
+# ignore those script generated files
+bundle.js
+main-compiled.js

@@ -1,39 +1,9 @@
-// ShoppingApp > MainContent > ProductList > ProductItem
-class ProductItem extends React.Component {
-  constructor(props) {
-    super(props);
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-    this.addToCart = this.addToCart.bind(this);
-    this.removeFromCart = this.removeFromCart.bind(this);
-  }
-
-  addToCart() {
-    // Update cart && Re-set inactivetime
-    this.props.onCartAdded(this.props.name);
-  }
-
-  removeFromCart() {
-    // Update cart && Re-set inactivetime
-    this.props.onCartRemoved(this.props.name);
-  }
-
-  render() {
-    return (
-      <li>
-          <img className="product" src={this.props.url} />
-          <div className="addOrRemove">
-              <button className="add" onClick={this.addToCart}> Add </button>
-              <button className="remove" onClick={this.removeFromCart}> Remove </button>
-              <img className="cart" src="images/cart.png" />
-          </div>
-          <div className="price">
-            ${this.props.price}
-          </div>
-          <div className="name">{this.props.name}</div>
-      </li>
-    );
-  }
-}
+import Header from './header.component.js';
+import MainContent from './mainContent.component.js';
+import Footer from './footer.component.js';
 
 // APP
 class ShoppingApp extends React.Component {
@@ -119,107 +89,6 @@ class ShoppingApp extends React.Component {
     );
   }
 }
-
-// ShoppingApp > MainContent > ProductList
-class ProductList extends React.Component {
-  render() {
-    const products = this.props.products;
-    // console.log(products);
-
-    let productItems = [];
-
-    for (let productName in products) {
-      let product = products[productName];
-      productItems.push(<ProductItem 
-      key={productName}
-      name={productName}
-      price={product.price} 
-      url={product.url}
-      quantity={product.quantity}
-      onCartAdded={this.props.onCartAdded}
-      onCartRemoved={this.props.onCartRemoved}
-      />);
-    }
-
-    // console.log(productItems);
-
-    // Convert original products to React product
-
-    return (
-      <div id="productList">
-                <ul>
-                  {productItems}
-                </ul>
-      </div>
-    );
-  }
-}
-
-
-// ShoppingApp > MainContent > Navigation
-class Navigation extends React.Component {
-  render() {
-    return (
-      <div id="navigationMenu">
-          <ul>
-              <li>All Items</li>
-              <li>Books</li>
-              <li>Clothing</li>
-              <li>Tech</li>
-              <li>Gifts</li>
-              <li>Stationary</li>
-              <li>Supplies</li>
-          </ul>
-      </div>
-    );
-  }
-}
-
-
-// ShoppingApp > MainContent
-class MainContent extends React.Component {
-  render() {
-    return (
-      <div id="mainContent">
-        <Navigation />
-        <ProductList 
-        products={this.props.products}
-        onCartAdded={this.props.onCartAdded}
-        onCartRemoved={this.props.onCartRemoved}
-        />
-      </div>
-    );
-  }
-}
-
-
-// ShoppingApp > Header
-class Header extends React.Component {
-  render() {
-    return (
-      <div id="header">
-            <div id="logo">
-                Bookstore
-            </div>
-            <div id="welcomeBanner">
-                Welcome to the UBC Bookstore!
-            </div>
-         </div>
-    );
-  }
-}
-
-// ShoppingApp > Footer
-class Footer extends React.Component {
-  render() {
-    return (
-      <div id="footer">
-            Copyright &copy; 2016
-      </div>
-    );
-  }
-}
-
 
 
 var products = {
