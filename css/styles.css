@@ -11,6 +11,18 @@
 }
 
 /* line 19, ../sass/styles.scss */
+#shoppingApp {
+  position: relative;
+}
+
+/* line 23, ../sass/styles.scss */
+#cartInfo {
+  position: absolute;
+  left: 500px;
+  z-index: 1;
+}
+
+/* line 29, ../sass/styles.scss */
 #logo,
 #welcomeBanner {
   height: 100px;
@@ -19,7 +31,7 @@
   text-align: center;
 }
 
-/* line 27, ../sass/styles.scss */
+/* line 37, ../sass/styles.scss */
 #logo {
   float: left;
   width: 200px;
@@ -30,24 +42,24 @@
   color: white;
 }
 
-/* line 37, ../sass/styles.scss */
+/* line 47, ../sass/styles.scss */
 #welcomeBanner {
   float: right;
   width: 780px;
   color: #2e6680;
 }
 
-/* line 43, ../sass/styles.scss */
+/* line 53, ../sass/styles.scss */
 #navigationMenu {
   float: left;
   width: 200px;
 }
-/* line 47, ../sass/styles.scss */
+/* line 57, ../sass/styles.scss */
 #navigationMenu ul {
   list-style: none;
   padding: 0px;
 }
-/* line 51, ../sass/styles.scss */
+/* line 61, ../sass/styles.scss */
 #navigationMenu ul li {
   display: block;
   width: 200px;
@@ -64,23 +76,23 @@
   border-radius: 5px;
   cursor: pointer;
 }
-/* line 67, ../sass/styles.scss */
+/* line 77, ../sass/styles.scss */
 #navigationMenu ul li:hover {
   color: red;
   background-color: #547c80;
 }
 
-/* line 75, ../sass/styles.scss */
+/* line 85, ../sass/styles.scss */
 #productList {
   float: right;
   width: 750px;
 }
-/* line 79, ../sass/styles.scss */
+/* line 89, ../sass/styles.scss */
 #productList ul {
   padding: 0px;
   list-style: none;
 }
-/* line 83, ../sass/styles.scss */
+/* line 93, ../sass/styles.scss */
 #productList ul li {
   display: block;
   float: left;
@@ -95,21 +107,21 @@
   text-align: center;
   position: relative;
 }
-/* line 97, ../sass/styles.scss */
+/* line 107, ../sass/styles.scss */
 #productList ul li:hover {
   background-color: #aaaaaa;
   background-image: url("images/cart.png");
 }
-/* line 101, ../sass/styles.scss */
+/* line 111, ../sass/styles.scss */
 #productList ul li:hover div.addOrRemove {
   background-color: rgba(0, 0, 0, 0.5);
   display: block;
 }
-/* line 106, ../sass/styles.scss */
+/* line 116, ../sass/styles.scss */
 #productList ul li:hover .price {
   display: block;
 }
-/* line 111, ../sass/styles.scss */
+/* line 121, ../sass/styles.scss */
 #productList ul li .product {
   height: 200px;
   max-width: 200px;
@@ -117,7 +129,7 @@
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 119, ../sass/styles.scss */
+/* line 129, ../sass/styles.scss */
 #productList ul li .price {
   background-color: black;
   color: white;
@@ -138,7 +150,7 @@
   border-bottom-left-radius: 5px;
   text-align: center;
 }
-/* line 139, ../sass/styles.scss */
+/* line 149, ../sass/styles.scss */
 #productList ul li div.addOrRemove {
   overflow: hidden;
   position: absolute;
@@ -147,14 +159,14 @@
   height: 170px;
   display: none;
 }
-/* line 147, ../sass/styles.scss */
+/* line 157, ../sass/styles.scss */
 #productList ul li div.addOrRemove .cart {
   width: inherit;
   height: inherit;
   opacity: 0.5;
   z-index: 0;
 }
-/* line 154, ../sass/styles.scss */
+/* line 164, ../sass/styles.scss */
 #productList ul li div.addOrRemove button.add {
   background-color: green;
   color: white;
@@ -166,7 +178,7 @@
   cursor: pointer;
   box-shadow: 0px 0px 3px orange;
 }
-/* line 166, ../sass/styles.scss */
+/* line 176, ../sass/styles.scss */
 #productList ul li div.addOrRemove button.remove {
   background-color: red;
   color: white;
@@ -179,7 +191,7 @@
   box-shadow: 0px 0px 3px orange;
 }
 
-/* line 182, ../sass/styles.scss */
+/* line 192, ../sass/styles.scss */
 #footer {
   text-align: center;
   color: #2e6680;

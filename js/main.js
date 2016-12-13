@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Header from './header.component.js';
+import CartInfo from './cartinfo.component.js';
 import MainContent from './mainContent.component.js';
 import Footer from './footer.component.js';
 
@@ -77,8 +78,12 @@ class ShoppingApp extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="shoppingApp">
         <Header />
+        <CartInfo 
+        cart={this.state.cart} 
+        products={this.props.products}
+        />
         <MainContent 
         products={this.props.products} 
         onCartAdded={this.handleAddToCart}
@@ -89,7 +94,6 @@ class ShoppingApp extends React.Component {
     );
   }
 }
-
 
 var products = {
   "KeyboardCombo": {
