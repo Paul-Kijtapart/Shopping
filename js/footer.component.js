@@ -2,13 +2,13 @@ import React from 'react';
 
 // ShoppingApp > Footer
 class Footer extends React.Component {
-  render() {
-    return (
-      <div id="footer">
-            Copyright &copy; 2016
+	render() {
+		return (
+			<div id="footer">
+            <p> Time Elapsed: {this.props.inactiveTime / 1000} </p>
       </div>
-    );
-  }
+		);
+	}
 }
 
 

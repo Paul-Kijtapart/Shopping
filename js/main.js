@@ -15,6 +15,7 @@ class ShoppingApp extends React.Component {
       cart: {}
     };
 
+    this.handleCartView = this.handleCartView.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this);
   }
@@ -27,6 +28,8 @@ class ShoppingApp extends React.Component {
       inactiveTime = 0;
       alert("Hey there! Are you still planning to buy something?");
     }
+
+    console.log(inactiveTime);
 
     this.setState({
       inactiveTime: inactiveTime
@@ -49,6 +52,11 @@ class ShoppingApp extends React.Component {
       cart[productName]--;
     }
 
+    // If number of ordered product hit 0, remove it from cart
+    if (cart[productName] <= 0) {
+      delete(cart[productName]);
+    }
+
     this.setState({
       inactiveTime: 0,
       cart: cart
@@ -58,11 +66,18 @@ class ShoppingApp extends React.Component {
     console.log(cart);
   }
 
+  // Cart['productName'] = quantities ordered
   handleAddToCart(productName) {
+    const products = this.props.products;
     let cart = this.state.cart;
     if (!(productName in cart)) {
       cart[productName] = 1;
+    } else if (cart[productName] >= products[productName].quantity) {
+      // the amount of ordered items reach maximum
+      alert('Your order is over our supply.');
+      return;
     } else {
+      // the amount of ordered item is below maximum
       cart[productName]++;
     }
 
@@ -70,10 +85,24 @@ class ShoppingApp extends React.Component {
       inactiveTime: 0,
       cart: cart
     });
-
     console.log("addToCart");
     console.log(cart);
-    // debugger;
+  }
+
+  handleCartView() {
+    // Re-set the inactiveTime
+    this.setState({
+      inactiveTime: 0
+    });
+  }
+
+  isEmpty(obj) {
+    for (let prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   render() {
@@ -83,13 +112,18 @@ class ShoppingApp extends React.Component {
         <CartInfo 
         cart={this.state.cart} 
         products={this.props.products}
+        onCartView ={this.handleCartView}
         />
         <MainContent 
         products={this.props.products} 
+        cart={this.state.cart}
         onCartAdded={this.handleAddToCart}
         onCartRemoved={this.handleRemoveFromCart}
+        isEmpty={this.isEmpty}
         />
-        <Footer />
+        <Footer 
+        inactiveTime={this.state.inactiveTime}
+        />
       </div>
     );
   }

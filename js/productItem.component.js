@@ -20,12 +20,14 @@ class ProductItem extends React.Component {
   }
 
   render() {
+    const isCartEmpty = this.props.isCartEmpty;
+
     return (
       <li>
           <img className="product" src={this.props.url} />
           <div className="addOrRemove">
               <button className="add" onClick={this.addToCart}> Add </button>
-              <button className="remove" onClick={this.removeFromCart}> Remove </button>
+              {!isCartEmpty && <button className="remove" onClick={this.removeFromCart}> Remove </button>}
               <img className="cart" src="images/cart.png" />
           </div>
           <div className="price">
