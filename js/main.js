@@ -5,6 +5,7 @@ import Header from './header.component.js';
 import CartInfo from './cartinfo.component.js';
 import MainContent from './mainContent.component.js';
 import Footer from './footer.component.js';
+import Modal from './modal.component.js';
 
 // APP
 class ShoppingApp extends React.Component {
@@ -105,24 +106,38 @@ class ShoppingApp extends React.Component {
     return true;
   }
 
+  getTotalCost(cart, products) {
+    let totalCost = 0;
+    for (let productName in cart) {
+      totalCost += (cart[productName] * products[productName].price);
+    }
+    return totalCost;
+  }
+
   render() {
     return (
       <div id="shoppingApp">
+        <Modal 
+          products={this.props.products}
+          cart={this.state.cart}
+          getTotalCost={this.getTotalCost}
+        />
         <Header />
         <CartInfo 
-        cart={this.state.cart} 
-        products={this.props.products}
-        onCartView ={this.handleCartView}
+          cart={this.state.cart} 
+          products={this.props.products}
+          onCartView ={this.handleCartView}
+          getTotalCost={this.getTotalCost}
         />
         <MainContent 
-        products={this.props.products} 
-        cart={this.state.cart}
-        onCartAdded={this.handleAddToCart}
-        onCartRemoved={this.handleRemoveFromCart}
-        isEmpty={this.isEmpty}
+          products={this.props.products} 
+          cart={this.state.cart}
+          onCartAdded={this.handleAddToCart}
+          onCartRemoved={this.handleRemoveFromCart}
+          isEmpty={this.isEmpty}
         />
         <Footer 
-        inactiveTime={this.state.inactiveTime}
+          inactiveTime={this.state.inactiveTime}
         />
       </div>
     );
