@@ -11,12 +11,12 @@ class ProductItem extends React.Component {
 
   addToCart() {
     // Update cart && Re-set inactivetime
-    this.props.onCartAdded(this.props.name);
+    this.props.addToCart(this.props.name);
   }
 
   removeFromCart() {
     // Update cart && Re-set inactivetime
-    this.props.onCartRemoved(this.props.name);
+    this.props.removeFromCart(this.props.name);
   }
 
   render() {

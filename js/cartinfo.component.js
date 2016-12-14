@@ -3,13 +3,13 @@ import React from 'react';
 class CartInfo extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleClick = this.handleClick.bind(this);
+    this.handleCartClick = this.handleCartClick.bind(this);
   }
 
-  handleClick() {
-    // Re-set the inactiveTime
-    this.props.onCartView();
+  // Re-set the inactiveTime
+  handleCartClick() {
+    this.props.setInactiveTime();
+    this.props.openModal();
   }
 
   render() {
@@ -20,7 +20,7 @@ class CartInfo extends React.Component {
 
     return (
       <div id="cartInfo">
-        <button onClick={this.handleClick}> Cart (${totalCost}) </button>
+        <button onClick={this.handleCartClick}> Cart (${totalCost}) </button>
       </div>
     );
   }

@@ -69,8 +69,8 @@ class ModalBody extends React.Component {
 				<ProductList 
 					products={orderItems}
 			        cart={cart}
-			        onCartAdded={this.props.onCartAdded}
-			        onCartRemoved={this.props.onCartRemoved}
+			        addToCart={this.props.addToCart}
+			        removeFromCart={this.props.removeFromCart}
 			        isEmpty={this.props.isEmpty}
 				/>
 			</div>
@@ -91,8 +91,8 @@ class ModalContent extends React.Component {
 				<ModalBody 
 					products={this.props.products}
 			        cart={this.props.cart}
-			        onCartAdded={this.props.onCartAdded}
-					onCartRemoved={this.props.onCartRemoved}
+			        addToCart={this.props.addToCart}
+					removeFromCart={this.props.removeFromCart}
 					isEmpty={this.props.isEmpty}
 					closeModal={this.props.closeModal}
 				/>
@@ -142,8 +142,8 @@ class Modal extends React.Component {
 					products={this.props.products}
 			        cart={this.props.cart}
 			        getTotalCost={this.props.getTotalCost}
-			        onCartAdded={this.props.onCartAdded}
-					onCartRemoved={this.props.onCartRemoved}
+			        addToCart={this.props.addToCart}
+					removeFromCart={this.props.removeFromCart}
 					isEmpty={this.props.isEmpty}
 					closeModal={this.props.closeModal}
 				/>

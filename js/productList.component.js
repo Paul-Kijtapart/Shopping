@@ -23,8 +23,8 @@ class ProductList extends React.Component {
           url={product.url}
           quantity={product.quantity}
           isCartEmpty={isCartEmpty}
-          onCartAdded={this.props.onCartAdded}
-          onCartRemoved={this.props.onCartRemoved}
+          addToCart={this.props.addToCart}
+          removeFromCart={this.props.removeFromCart}
         />);
     }
 

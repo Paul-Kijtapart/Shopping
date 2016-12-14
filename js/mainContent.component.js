@@ -12,8 +12,8 @@ class MainContent extends React.Component {
         <ProductList 
           products={this.props.products}
           cart={this.props.cart}
-          onCartAdded={this.props.onCartAdded}
-          onCartRemoved={this.props.onCartRemoved}
+          addToCart={this.props.addToCart}
+          removeFromCart={this.props.removeFromCart}
           isEmpty={this.props.isEmpty}
         />
       </div>

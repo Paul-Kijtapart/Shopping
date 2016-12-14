@@ -21,9 +21,10 @@ class ShoppingApp extends React.Component {
       isModalOpen: false
     };
 
-    this.handleCartView = this.handleCartView.bind(this);
-    this.handleAddToCart = this.handleAddToCart.bind(this);
-    this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this);
+    // Bind Functions to this 
+    this.setInactiveTime = this.setInactiveTime.bind(this);
+    this.addToCart = this.addToCart.bind(this);
+    this.removeFromCart = this.removeFromCart.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
   }
@@ -39,9 +40,7 @@ class ShoppingApp extends React.Component {
 
     console.log(inactiveTime);
 
-    this.setState({
-      inactiveTime: inactiveTime
-    });
+    this.setInactiveTime(inactiveTime);
   }
 
   componentDidMount() {
@@ -55,7 +54,7 @@ class ShoppingApp extends React.Component {
     clearInterval(this.interval);
   }
 
-  handleRemoveFromCart(productName) {
+  removeFromCart(productName) {
     let cart = this.state.cart;
     if ((productName in cart) && cart[productName] > 0) {
       cart[productName]--;
@@ -76,7 +75,7 @@ class ShoppingApp extends React.Component {
   }
 
   // Cart['productName'] = quantities ordered
-  handleAddToCart(productName) {
+  addToCart(productName) {
     const products = this.props.products;
     let cart = this.state.cart;
     if (!(productName in cart)) {
@@ -98,11 +97,10 @@ class ShoppingApp extends React.Component {
     console.log(cart);
   }
 
-  handleCartView() {
-    // Re-set the inactiveTime
+  // Set the state's inactiveTime to given value
+  setInactiveTime(value) {
     this.setState({
-      inactiveTime: 0,
-      isModalOpen: true
+      inactiveTime: value
     });
   }
 
@@ -143,8 +141,8 @@ class ShoppingApp extends React.Component {
             products={this.props.products}
             cart={this.state.cart}
             getTotalCost={this.getTotalCost}
-            onCartAdded={this.handleAddToCart}
-            onCartRemoved={this.handleRemoveFromCart}
+            addToCart={this.addToCart}
+            removeFromCart={this.removeFromCart}
             isEmpty={this.isEmpty}
             closeModal={this.closeModal}
           /> 
@@ -154,14 +152,15 @@ class ShoppingApp extends React.Component {
         <CartInfo 
           cart={this.state.cart} 
           products={this.props.products}
-          onCartView ={this.handleCartView}
+          setInactiveTime ={this.setInactiveTime}
+          openModal={this.openModal}
           getTotalCost={this.getTotalCost}
         />
         <MainContent 
           products={this.props.products} 
           cart={this.state.cart}
-          onCartAdded={this.handleAddToCart}
-          onCartRemoved={this.handleRemoveFromCart}
+          addToCart={this.addToCart}
+          removeFromCart={this.removeFromCart}
           isEmpty={this.isEmpty}
         />
         <Footer 
