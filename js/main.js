@@ -17,12 +17,15 @@ class ShoppingApp extends React.Component {
         'KeyboardCombo': 2,
         'Box1': 1,
         'Box2': 4
-      }
+      },
+      isModalOpen: false
     };
 
     this.handleCartView = this.handleCartView.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   tick() {
@@ -45,6 +48,7 @@ class ShoppingApp extends React.Component {
     // this.interval = setInterval(
     //   () => this.tick(),
     //   1000);
+
   }
 
   componentWillUnmount() {
@@ -97,7 +101,8 @@ class ShoppingApp extends React.Component {
   handleCartView() {
     // Re-set the inactiveTime
     this.setState({
-      inactiveTime: 0
+      inactiveTime: 0,
+      isModalOpen: true
     });
   }
 
@@ -118,17 +123,33 @@ class ShoppingApp extends React.Component {
     return totalCost;
   }
 
+  closeModal() {
+    this.setState({
+      isModalOpen: false
+    });
+  }
+
+  openModal() {
+    this.setState({
+      isModalOpen: true
+    });
+  }
+
   render() {
     return (
       <div id="shoppingApp">
-        <Modal 
-          products={this.props.products}
-          cart={this.state.cart}
-          getTotalCost={this.getTotalCost}
-          onCartAdded={this.handleAddToCart}
-          onCartRemoved={this.handleRemoveFromCart}
-          isEmpty={this.isEmpty}
-        />
+        {this.state.isModalOpen? 
+          <Modal 
+            products={this.props.products}
+            cart={this.state.cart}
+            getTotalCost={this.getTotalCost}
+            onCartAdded={this.handleAddToCart}
+            onCartRemoved={this.handleRemoveFromCart}
+            isEmpty={this.isEmpty}
+            closeModal={this.closeModal}
+          /> 
+          : null
+        }
         <Header />
         <CartInfo 
           cart={this.state.cart} 

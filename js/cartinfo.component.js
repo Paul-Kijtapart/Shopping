@@ -10,7 +10,6 @@ class CartInfo extends React.Component {
   handleClick() {
     // Re-set the inactiveTime
     this.props.onCartView();
-
   }
 
   render() {
