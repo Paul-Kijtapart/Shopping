@@ -1,4 +1,5 @@
 import React from 'react';
+import ProductList from './productList.component.js';
 
 class ModalFooter extends React.Component {
 	render() {
@@ -28,9 +29,26 @@ class ModalHeader extends React.Component {
 
 class ModalBody extends React.Component {
 	render() {
+		const products = this.props.products;
+		const cart = this.props.cart;
+		let orderItems = {};
+
+		for (let productName in cart) {
+			orderItems[productName] = products[productName];
+		}
+
+		console.log('orderItems are : ');
+		console.log(orderItems);
+
 		return (
 			<div className="modalBody">
-				Content
+				<ProductList 
+					products={orderItems}
+			        cart={cart}
+			        onCartAdded={this.props.onCartAdded}
+			        onCartRemoved={this.props.onCartRemoved}
+			        isEmpty={this.props.isEmpty}
+				/>
 			</div>
 		);
 	}
@@ -48,7 +66,9 @@ class ModalContent extends React.Component {
 				<ModalBody 
 					products={this.props.products}
 			        cart={this.props.cart}
-			        getTotalCost={this.props.getTotalCost}
+			        onCartAdded={this.props.onCartAdded}
+					onCartRemoved={this.props.onCartRemoved}
+					isEmpty={this.props.isEmpty}
 				/>
 				<ModalFooter />
 			</div>
@@ -64,6 +84,9 @@ class Modal extends React.Component {
 					products={this.props.products}
 			        cart={this.props.cart}
 			        getTotalCost={this.props.getTotalCost}
+			        onCartAdded={this.props.onCartAdded}
+					onCartRemoved={this.props.onCartRemoved}
+					isEmpty={this.props.isEmpty}
 				/>
 			</div>
 		);

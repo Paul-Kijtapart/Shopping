@@ -13,7 +13,11 @@ class ShoppingApp extends React.Component {
     super(props);
     this.state = {
       inactiveTime: 0,
-      cart: {}
+      cart: {
+        'KeyboardCombo': 2,
+        'Box1': 1,
+        'Box2': 4
+      }
     };
 
     this.handleCartView = this.handleCartView.bind(this);
@@ -121,6 +125,9 @@ class ShoppingApp extends React.Component {
           products={this.props.products}
           cart={this.state.cart}
           getTotalCost={this.getTotalCost}
+          onCartAdded={this.handleAddToCart}
+          onCartRemoved={this.handleRemoveFromCart}
+          isEmpty={this.isEmpty}
         />
         <Header />
         <CartInfo 

@@ -10,11 +10,11 @@ class MainContent extends React.Component {
       <div id="mainContent">
         <Navigation />
         <ProductList 
-        products={this.props.products}
-        cart={this.props.cart}
-        onCartAdded={this.props.onCartAdded}
-        onCartRemoved={this.props.onCartRemoved}
-        isEmpty={this.props.isEmpty}
+          products={this.props.products}
+          cart={this.props.cart}
+          onCartAdded={this.props.onCartAdded}
+          onCartRemoved={this.props.onCartRemoved}
+          isEmpty={this.props.isEmpty}
         />
       </div>
     );
