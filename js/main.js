@@ -171,77 +171,65 @@ class ShoppingApp extends React.Component {
   }
 }
 
-var products = {
-  "KeyboardCombo": {
-    "price": 31,
-    "quantity": 10,
-    "url": "images/KeyboardCombo_$40.png"
-  },
-  "Mice": {
-    "price": 7,
-    "quantity": 9,
-    "url": "images/Mice_$20.png"
-  },
-  "PC1": {
-    "price": 348,
-    "quantity": 0,
-    "url": "images/PC1_$350.png"
-  },
-  "PC2": {
-    "price": 374,
-    "quantity": 8,
-    "url": "images/PC2_$400.png"
-  },
-  "PC3": {
-    "price": 346,
-    "quantity": 9,
-    "url": "images/PC3_$300.png"
-  },
-  "Tent": {
-    "price": 40,
-    "quantity": 9,
-    "url": "images/Tent_$100.png"
-  },
-  "Box1": {
-    "price": 5,
-    "quantity": 5,
-    "url": "images/Box1_$10.png"
-  },
-  "Box2": {
-    "price": 6,
-    "quantity": 4,
-    "url": "images/Box2_$5.png"
-  },
-  "Clothes1": {
-    "price": 29,
-    "quantity": 6,
-    "url": "images/Clothes1_$20.png"
-  },
-  "Clothes2": {
-    "price": 23,
-    "quantity": 5,
-    "url": "images/Clothes2_$30.png"
-  },
-  "Jeans": {
-    "price": 32,
-    "quantity": 2,
-    "url": "images/Jeans_$50.png"
-  },
-  "Keyboard": {
-    "price": 16,
-    "quantity": 7,
-    "url": "images/Keyboard_$20.png"
+// USER INPUT
+var timeLimit = 10000;
+var serverURL = 'https://cpen400a.herokuapp.com/products';
+
+// START APP
+var xhr = new XMLHttpRequest();
+
+xhr.open('GET', serverURL);
+xhr.responseType = 'json';
+
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    if (xhr.response) {
+      console.log('Successfully Received response in json format');
+      var products = xhr.response;
+
+      // START APP
+      ReactDOM.render(
+        <ShoppingApp 
+          products={products}
+          timeLimit={timeLimit}
+        />,
+        document.getElementById('root')
+      );
+    } else {
+      console.log('Successfully Received response NOT json format');
+    }
+  } else {
+    console.log(xhr);
+    console.log(xhr.status);
   }
 };
 
-// { "productName" : 0 }
-var cart = {};
-var timeLimit = 10000;
+xhr.onprogress = function(e) {
+  // e should have the total number of bytes to transfer 
+  // as well as the number of bytes transferred so far in the event's total and loaded fields.
+  console.log('on progress');
+  if (e.lengthComputable) {
+    var percentComplete = e.loaded / e.total;
+    console.log('percentComplete: ' + percentComplete);
+    // ...
+  } else {
+    // Unable to compute progress information since the total size is unknown
+    console.log('Unable to compute progress information since the total size is unknown');
+  }
+};
 
-ReactDOM.render(
-  <ShoppingApp 
-  products={products}
-  timeLimit={timeLimit}
-  />,
-  document.getElementById('root')
-);
+// SET UP error case
+xhr.timeout = 10000;
+xhr.ontimeout = function() {
+  console.log('ajax is timed out.');
+};
+
+xhr.onerror = function() {
+  console.log('ajax has error.');
+};
+
+xhr.onabort = function() {
+  console.log('ajax canceled by user.');
+};
+
+xhr.send();
