@@ -189,13 +189,10 @@ loadProducts(serverURL, numAttemps,
       <ShoppingApp 
           products={products}
           timeLimit={timeLimit}
+          serverURL={serverURL}
         />,
       document.getElementById('root')
     );
   });
 
 console.log('GGGGGG');
-
-// debugger;
-
-// sendReq();

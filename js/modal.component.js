@@ -10,6 +10,19 @@ class ModalFooter extends React.Component {
 	handleCheckout() {
 		// Do something then close modal
 		this.props.closeModal();
+
+		/* 
+		When a user click CheckOut
+		1: When the user clicks on checkout, you will need to make sure that the products are still available in the back store and the prices are updated.
+		2: when the user clicks on checkout, you will alert the user with the message showing that you are confirming the final total price as well as the availability.
+			- If there is any price change, you will need to alert the user for each product for which the price changed.
+			- For any of the selected products, if the quantity that the user ordered is not available any more, you will change the number of products in the cart to the now available quantity.
+				- You will also need to alert the user about the updated quantity as well.
+		3. The cart variable should also be updated to reflect the revised prices/quantity. 
+		4. The cart variable should also be updated to reflect the revised prices/quantity.
+		5. you will alert the user with the total amount due (based on the cart's contents).
+		*/
+
 	}
 
 	render() {
