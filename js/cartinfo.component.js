@@ -8,8 +8,10 @@ class CartInfo extends React.Component {
 
   // Re-set the inactiveTime
   handleCartClick() {
-    this.props.setInactiveTime();
-    this.props.openModal();
+    // this.props.setInactiveTime();
+    // this.props.openModal();
+    this.props.updateProducts();
+
   }
 
   render() {

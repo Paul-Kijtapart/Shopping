@@ -1,5 +1,5 @@
 // Make a request to server, func to take the successful response
-var loadProducts = function(serverURL, numAttemps, func) {
+var loadProducts = function(serverURL, numAttemps = 1, func, timeout) {
   var sendRequest = function() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', serverURL);
@@ -17,7 +17,7 @@ var loadProducts = function(serverURL, numAttemps, func) {
       if (xhr.status === 200) {
         if (xhr.response) {
           console.log('onload 200: success');
-          console.log(xhr.response);
+          // console.log(xhr.response);
           func(xhr.response);
         } else {
           console.log('onload 200: failed');
@@ -43,7 +43,7 @@ var loadProducts = function(serverURL, numAttemps, func) {
       }
     };
 
-    xhr.timeout = 3000;
+    xhr.timeout = timeout;
     xhr.ontimeout = function() {
       console.log('ajax is timed out.');
       reAttempt();

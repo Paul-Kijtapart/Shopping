@@ -1,6 +1,11 @@
 import React from 'react';
 import ProductList from './productList.component.js';
 
+// Util function
+import {
+	loadProducts
+} from './ajaxHelper.js';
+
 class ModalFooter extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,9 +24,10 @@ class ModalFooter extends React.Component {
 			- For any of the selected products, if the quantity that the user ordered is not available any more, you will change the number of products in the cart to the now available quantity.
 				- You will also need to alert the user about the updated quantity as well.
 		3. The cart variable should also be updated to reflect the revised prices/quantity. 
-		4. The cart variable should also be updated to reflect the revised prices/quantity.
-		5. you will alert the user with the total amount due (based on the cart's contents).
+		4. you will alert the user with the total amount due (based on the cart's contents).
 		*/
+
+		// loadProducts(this.props.serverURL, 4, this.props.setProducts);
 
 	}
 
