@@ -1,11 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Componenets:
 import Header from './header.component.js';
 import CartInfo from './cartinfo.component.js';
 import MainContent from './mainContent.component.js';
 import Footer from './footer.component.js';
 import Modal from './modal.component.js';
+
+// Util function
+import {
+  loadProducts
+} from './ajaxHelper.js';
+
 
 // APP
 class ShoppingApp extends React.Component {
@@ -174,62 +181,21 @@ class ShoppingApp extends React.Component {
 // USER INPUT
 var timeLimit = 10000;
 var serverURL = 'https://cpen400a.herokuapp.com/products';
+var numAttemps = 5;
 
-// START APP
-var xhr = new XMLHttpRequest();
-
-xhr.open('GET', serverURL);
-xhr.responseType = 'json';
-
-xhr.onload = function() {
-  if (xhr.status === 200) {
-    if (xhr.response) {
-      console.log('Successfully Received response in json format');
-      var products = xhr.response;
-
-      // START APP
-      ReactDOM.render(
-        <ShoppingApp 
+loadProducts(serverURL, numAttemps,
+  (products) => {
+    ReactDOM.render(
+      <ShoppingApp 
           products={products}
           timeLimit={timeLimit}
         />,
-        document.getElementById('root')
-      );
-    } else {
-      console.log('Successfully Received response NOT json format');
-    }
-  } else {
-    console.log(xhr);
-    console.log(xhr.status);
-  }
-};
+      document.getElementById('root')
+    );
+  });
 
-xhr.onprogress = function(e) {
-  // e should have the total number of bytes to transfer 
-  // as well as the number of bytes transferred so far in the event's total and loaded fields.
-  console.log('on progress');
-  if (e.lengthComputable) {
-    var percentComplete = e.loaded / e.total;
-    console.log('percentComplete: ' + percentComplete);
-    // ...
-  } else {
-    // Unable to compute progress information since the total size is unknown
-    console.log('Unable to compute progress information since the total size is unknown');
-  }
-};
+console.log('GGGGGG');
 
-// SET UP error case
-xhr.timeout = 10000;
-xhr.ontimeout = function() {
-  console.log('ajax is timed out.');
-};
+// debugger;
 
-xhr.onerror = function() {
-  console.log('ajax has error.');
-};
-
-xhr.onabort = function() {
-  console.log('ajax canceled by user.');
-};
-
-xhr.send();
+// sendReq();
