@@ -14,7 +14,6 @@ class ModalFooter extends React.Component {
 
 	handleCheckout() {
 		// Do something then close modal
-		this.props.closeModal();
 
 		/* 
 		When a user click CheckOut
@@ -27,8 +26,12 @@ class ModalFooter extends React.Component {
 		4. you will alert the user with the total amount due (based on the cart's contents).
 		*/
 
-		// loadProducts(this.props.serverURL, 4, this.props.setProducts);
-
+		loadProducts(this.props.serverURL, 5, this.props.setProducts);
+		console.log('lets go modal footer. \n ');
+		let status = confirm('done with purchase?');
+		if (status) {
+			this.props.closeModal()
+		};
 	}
 
 	render() {
@@ -71,6 +74,23 @@ class ModalHeader extends React.Component {
 }
 
 class ModalBody extends React.Component {
+
+	componentWillUpdate(nextProps, nextState) {
+		console.log('what is nextState: \n');
+		console.log(nextState);
+		console.log('oldProps: \n');
+		console.log(this.props);
+		console.log('nextProps:  \n');
+		console.log(nextProps);
+
+		// Calculate the difference before old products and next products
+		// See how it affects the cart
+		const prevProducts = this.props.products;
+		const cart = this.props.cart;
+		this.cartDiff = this.props.getCartChange(cart, prevProducts, nextProps.products);
+		this.productDiff = this.props.getProductsChange(prevProducts, nextProps.products);
+	}
+
 	render() {
 		const products = this.props.products;
 		const cart = this.props.cart;
@@ -80,8 +100,7 @@ class ModalBody extends React.Component {
 			orderItems[productName] = products[productName];
 		}
 
-		// console.log('orderItems are : ');
-		// console.log(orderItems);
+		// TODO: display cart change as well as products change
 
 		return (
 			<div className="modalBody">
@@ -92,6 +111,8 @@ class ModalBody extends React.Component {
 			        removeFromCart={this.props.removeFromCart}
 			        isEmpty={this.props.isEmpty}
 				/>
+				 <p> {this.cartDiff? 'Cart has changed' + this.cartDiff : null} </p>
+				 <p> {this.productDiff? 'Updated products' + this.productDiff  : null}  </p>
 			</div>
 		);
 	}
@@ -114,9 +135,15 @@ class ModalContent extends React.Component {
 					removeFromCart={this.props.removeFromCart}
 					isEmpty={this.props.isEmpty}
 					closeModal={this.props.closeModal}
+					getProductsChange={this.props.getProductsChange}
+					getCartChange={this.props.getCartChange}
+					getProductInfoChange={this.props.getProductInfoChange}
+					getTotalCost={this.props.getTotalCost}
 				/>
 				<ModalFooter 
 					closeModal={this.props.closeModal}
+					serverURL={this.props.serverURL}
+					setProducts={this.props.setProducts}
 				/>
 			</div>
 		);
@@ -165,6 +192,12 @@ class Modal extends React.Component {
 					removeFromCart={this.props.removeFromCart}
 					isEmpty={this.props.isEmpty}
 					closeModal={this.props.closeModal}
+					setProducts={this.props.setProducts}
+					serverURL={this.props.serverURL}
+					getProductsChange={this.props.getProductsChange}
+					getCartChange={this.props.getCartChange}
+					getProductInfoChange={this.props.getProductInfoChange}
+					getTotalCost={this.props.getTotalCost}
 				/>
 			</div>
 		);

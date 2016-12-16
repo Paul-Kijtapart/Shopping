@@ -152,10 +152,17 @@ class ShoppingApp extends React.Component {
       const prevProducts = prevState.products;
       let cart = prevState.cart;
 
-      const cartDiff = this.updateCart(cart, prevProducts, products);
-      console.log('cartDiff: \n' + cartDiff);
-      const productsDiff = this.getProductsChange(prevProducts, products);
+      // const cartDiff = this.getCartChange(cart, prevProducts, products);
+      // console.log('cartDiff: \n' + cartDiff);
+      // const productsDiff = this.getProductsChange(prevProducts, products);
 
+
+      // Update cart:
+      for (let productName in cart) {
+        if (cart[productName] > products[productName].quantity) {
+          cart[productName] = products[productName].quantity;
+        }
+      }
 
       // console.log('totalDiff is ' + this.totalDiff);
       return {
@@ -166,18 +173,11 @@ class ShoppingApp extends React.Component {
   }
 
   // Return the different from prevVersion to newVersion
-  updateCart(cart, prevProducts, newProducts) {
+  getCartChange(cart, prevProducts, newProducts) {
     let totalDiff = '';
     for (let productName in cart) {
       totalDiff += this.getProductInfoChange(productName, prevProducts[productName], newProducts[productName]);
-      totalDiff += '\n';
-
-      // Update cart:
-      if (cart[productName] > newProducts[productName].quantity) {
-        cart[productName] = newProducts[productName].quantity;
-      }
     };
-
     totalDiff += "new TotalCost is " + this.getTotalCost(cart, newProducts) + '.\n';
     return totalDiff;
   }
@@ -186,7 +186,6 @@ class ShoppingApp extends React.Component {
     let totalDiff = '';
     for (let productName in newProducts) {
       totalDiff += this.getProductInfoChange(productName, prevProducts[productName], newProducts[productName]);
-      totalDiff += '\n';
     }
     return totalDiff;
   }
@@ -230,6 +229,12 @@ class ShoppingApp extends React.Component {
             removeFromCart={this.removeFromCart}
             isEmpty={this.isEmpty}
             closeModal={this.closeModal}
+            serverURL={this.props.serverURL}
+            setProducts={this.setProducts}
+            getProductsChange={this.getProductsChange}
+            getCartChange={this.getCartChange}
+            getProductInfoChange={this.getProductInfoChange}
+            getTotalCost={this.getTotalCost}
           /> 
           : null
         }
@@ -240,7 +245,6 @@ class ShoppingApp extends React.Component {
           setInactiveTime ={this.setInactiveTime}
           openModal={this.openModal}
           getTotalCost={this.getTotalCost}
-          updateProducts={this.updateProducts}
         />
         <MainContent 
           products={this.state.products} 
