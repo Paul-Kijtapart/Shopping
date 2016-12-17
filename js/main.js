@@ -153,10 +153,9 @@ class ShoppingApp extends React.Component {
       // Update cart:
       for (let productName in cart) {
         if (cart[productName] > products[productName].quantity) {
+          cart[productName] = products[productName].quantity;
           if (cart[productName] <= 0) {
             delete(cart[productName]);
-          } else {
-            cart[productName] = products[productName].quantity;
           }
         }
       }
@@ -273,93 +272,19 @@ class ShoppingApp extends React.Component {
   }
 }
 
-
-var products = {
-  "KeyboardCombo": {
-    "price": 21,
-    "quantity": 10,
-    "url": "images/KeyboardCombo_$40.png"
-  },
-  "Mice": {
-    "price": 7,
-    "quantity": 40,
-    "url": "images/Mice_$20.png"
-  },
-  "PC1": {
-    "price": 420,
-    "quantity": 42,
-    "url": "images/PC1_$350.png"
-  },
-  "PC2": {
-    "price": 374,
-    "quantity": 8,
-    "url": "images/PC2_$400.png"
-  },
-  "PC3": {
-    "price": 346,
-    "quantity": 9,
-    "url": "images/PC3_$300.png"
-  },
-  "Tent": {
-    "price": 40,
-    "quantity": 9,
-    "url": "images/Tent_$100.png"
-  },
-  "Box1": {
-    "price": 5,
-    "quantity": 5,
-    "url": "images/Box1_$10.png"
-  },
-  "Box2": {
-    "price": 6,
-    "quantity": 4,
-    "url": "images/Box2_$5.png"
-  },
-  "Clothes1": {
-    "price": 29,
-    "quantity": 6,
-    "url": "images/Clothes1_$20.png"
-  },
-  "Clothes2": {
-    "price": 23,
-    "quantity": 5,
-    "url": "images/Clothes2_$30.png"
-  },
-  "Jeans": {
-    "price": 32,
-    "quantity": 2,
-    "url": "images/Jeans_$50.png"
-  },
-  "Keyboard": {
-    "price": 16,
-    "quantity": 7,
-    "url": "images/Keyboard_$20.png"
-  }
-};
-
-
 // USER INPUT
 var timeLimit = 10000;
 var serverURL = 'https://cpen400a.herokuapp.com/products';
 var numAttemps = 5;
 
-ReactDOM.render(
-  <ShoppingApp 
+loadProducts(serverURL, numAttemps,
+  (products) => {
+    ReactDOM.render(
+      <ShoppingApp 
           products={products}
           timeLimit={timeLimit}
           serverURL={serverURL}
         />,
-  document.getElementById('root')
-);
-
-// loadProducts(serverURL, numAttemps,
-//   (products) => {
-//     ReactDOM.render(
-//       <ShoppingApp 
-//           products={products}
-//           timeLimit={timeLimit}
-//           serverURL={serverURL}
-//         />,
-//       document.getElementById('root')
-//     );
-//   }, 5000);
+      document.getElementById('root')
+    );
+  }, 5000);
