@@ -9,11 +9,17 @@ class ProductItem extends React.Component {
     this.removeFromCart = this.removeFromCart.bind(this);
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    this.prevPrice = this.props.price;
+  }
+
+  // Add this product to the cart
   addToCart() {
     // Update cart && Re-set inactivetime
     this.props.addToCart(this.props.name);
   }
 
+  // Remove this product from the cart
   removeFromCart() {
     // Update cart && Re-set inactivetime
     this.props.removeFromCart(this.props.name);
@@ -21,23 +27,49 @@ class ProductItem extends React.Component {
 
   render() {
     const isCartEmpty = this.props.isCartEmpty;
+    let price = this.props.price;
+
+    if (this.prevPrice && this.prevPrice !== price) {
+      price = <div className='price'> ${this.prevPrice} => ${price}</div>;
+    } else {
+      price = <div className='price'> ${price} </div>
+    }
 
     return (
-      <li>
+      <li className="productItem">
           <img className="product" src={this.props.url} />
           <div className="addOrRemove">
               <button className="add" onClick={this.addToCart}> Add </button>
               {!isCartEmpty && <button className="remove" onClick={this.removeFromCart}> Remove </button>}
               <img className="cart" src="images/cart.png" />
           </div>
-          <div className="price">
-            ${this.props.price}
-          </div>
+          {price}
           <div className="name">{this.props.name}</div>
+          {this.props.children}
       </li>
     );
   }
 }
 
+class CartItem extends React.Component {
 
-export default ProductItem;
+  render() {
+    const quantityOrdered = this.props.quantityOrdered;
+    const quantityOrderedView = <p> # Ordered: {quantityOrdered} </p>;
+
+
+    return (
+      <ProductItem
+        {...this.props}
+      >
+      { quantityOrdered? quantityOrderedView : null}
+      </ProductItem>
+    );
+  }
+}
+
+
+export {
+  ProductItem,
+  CartItem
+};

@@ -13,8 +13,6 @@ import {
   loadProducts
 } from './ajaxHelper.js';
 
-
-// APP
 class ShoppingApp extends React.Component {
   constructor(props) {
     super(props);
@@ -26,33 +24,33 @@ class ShoppingApp extends React.Component {
         'PC1': 1
       },
       isModalOpen: false,
-      products: this.props.products
+      products: this.props.products,
+      isUpdated: false // Only become true when Ajax's call is successful
     };
 
-    // Bind Functions to this 
+    // Bind Functions to this App
     this.setInactiveTime = this.setInactiveTime.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.removeFromCart = this.removeFromCart.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.setProducts = this.setProducts.bind(this);
-    this.updateProducts = this.updateProducts.bind(this);
+    this.updateProducts = this.updateProducts.bind(this)
+    this.resetIsUpdated = this.resetIsUpdated.bind(this);
   }
 
+  // Update State's inactiveTimer and notify user when time limit is reached
   tick() {
-    // update inactiveTime
     let inactiveTime = this.state.inactiveTime;
     inactiveTime += 1000;
     if (inactiveTime >= this.props.timeLimit) {
       inactiveTime = 0;
       alert("Hey there! Are you still planning to buy something?");
     }
-
-    console.log(inactiveTime);
-
     this.setInactiveTime(inactiveTime);
   }
 
+  // Start the inactiveTimer after first render
   componentDidMount() {
     // this.interval = setInterval(
     //   () => this.tick(),
@@ -60,6 +58,7 @@ class ShoppingApp extends React.Component {
 
   }
 
+  // Stop the inactiveTimer after remove this app
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -74,39 +73,35 @@ class ShoppingApp extends React.Component {
     return true;
   }
 
-  // CART METHODS
+  // Remove a product from the cart
   removeFromCart(productName) {
     let cart = this.state.cart;
-    if ((productName in cart) && cart[productName] > 0) {
+    if (!(productName in cart)) {
+      alert('You have not purchased ' + productName);
+      return;
+    }
+    if (cart[productName] > 0) {
       cart[productName]--;
     }
-
-    // If number of ordered product hit 0, remove it from cart
     if (cart[productName] <= 0) {
       delete(cart[productName]);
     }
-
     this.setState({
       inactiveTime: 0,
       cart: cart
     });
-
-    console.log("removeFromCart");
-    console.log(cart);
   }
 
-  // Cart['productName'] = quantities ordered
+  // Add a product into the cart
   addToCart(productName) {
     const products = this.props.products;
     let cart = this.state.cart;
     if (!(productName in cart)) {
       cart[productName] = 1;
     } else if (cart[productName] >= products[productName].quantity) {
-      // the amount of ordered items reach maximum
       alert('Your order is over our supply.');
       return;
     } else {
-      // the amount of ordered item is below maximum
       cart[productName]++;
     }
 
@@ -114,10 +109,9 @@ class ShoppingApp extends React.Component {
       inactiveTime: 0,
       cart: cart
     });
-    console.log("addToCart");
-    console.log(cart);
   }
 
+  // Return total Cost from current's State's cart
   getTotalCost(cart, products) {
     let totalCost = 0;
     for (let productName in cart) {
@@ -126,53 +120,62 @@ class ShoppingApp extends React.Component {
     return totalCost;
   }
 
-  // TIME METHODS
+  // Set State's inactive time to given value
   setInactiveTime(value) {
     this.setState({
       inactiveTime: value
     });
   }
 
-  // MODAL METHODS
+  // Close Modal UI
   closeModal() {
     this.setState({
       isModalOpen: false
     });
   }
 
+  // Open Modal UI
   openModal() {
     this.setState({
       isModalOpen: true
     });
   }
 
-  // Products METHODS
+  /**
+  Update State's products and State's cart with the updated products from server
+  param: products - updated Products from server
+  **/
   setProducts(products) {
     this.setState(function(prevState) {
       const prevProducts = prevState.products;
       let cart = prevState.cart;
 
-      // const cartDiff = this.getCartChange(cart, prevProducts, products);
-      // console.log('cartDiff: \n' + cartDiff);
-      // const productsDiff = this.getProductsChange(prevProducts, products);
-
-
       // Update cart:
       for (let productName in cart) {
         if (cart[productName] > products[productName].quantity) {
-          cart[productName] = products[productName].quantity;
+          if (cart[productName] <= 0) {
+            delete(cart[productName]);
+          } else {
+            cart[productName] = products[productName].quantity;
+          }
         }
       }
-
-      // console.log('totalDiff is ' + this.totalDiff);
       return {
         products: products,
-        cart: cart
+        cart: cart,
+        isUpdated: true
       };
     }.bind(this));
   }
 
-  // Return the different from prevVersion to newVersion
+  // Re-set isUpdated status after successful ajax and render
+  resetIsUpdated() {
+    this.setState({
+      isUpdated: false
+    });
+  }
+
+  // Return String explaining list of changes between old cart and new cart
   getCartChange(cart, prevProducts, newProducts) {
     let totalDiff = '';
     for (let productName in cart) {
@@ -182,6 +185,7 @@ class ShoppingApp extends React.Component {
     return totalDiff;
   }
 
+  // Return String explaining list of changes between old products and new products
   getProductsChange(prevProducts, newProducts) {
     let totalDiff = '';
     for (let productName in newProducts) {
@@ -191,6 +195,8 @@ class ShoppingApp extends React.Component {
   }
 
 
+  // Return String explaining the difference between old product and new product with the same name
+  // Return '' if there is no change
   getProductInfoChange(productName, prevProduct, newProduct) {
     var totalChange = '';
 
@@ -217,7 +223,13 @@ class ShoppingApp extends React.Component {
     console.log('after');
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('MAIN PrevState: ' + prevState.isUpdated);
+    console.log('MAIN Current: ' + this.state.isUpdated);
+  }
+
   render() {
+    console.log('main render');
     return (
       <div id="shoppingApp">
         {this.state.isModalOpen? 
@@ -227,7 +239,6 @@ class ShoppingApp extends React.Component {
             getTotalCost={this.getTotalCost}
             addToCart={this.addToCart}
             removeFromCart={this.removeFromCart}
-            isEmpty={this.isEmpty}
             closeModal={this.closeModal}
             serverURL={this.props.serverURL}
             setProducts={this.setProducts}
@@ -235,6 +246,8 @@ class ShoppingApp extends React.Component {
             getCartChange={this.getCartChange}
             getProductInfoChange={this.getProductInfoChange}
             getTotalCost={this.getTotalCost}
+            isUpdated={this.state.isUpdated}
+            resetIsUpdated={this.resetIsUpdated}
           /> 
           : null
         }
@@ -251,7 +264,6 @@ class ShoppingApp extends React.Component {
           cart={this.state.cart}
           addToCart={this.addToCart}
           removeFromCart={this.removeFromCart}
-          isEmpty={this.isEmpty}
         />
         <Footer 
           inactiveTime={this.state.inactiveTime}

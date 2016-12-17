@@ -1,7 +1,14 @@
 import React from 'react';
-import ProductList from './productList.component.js';
 
-// Util function
+// Componenets
+import {
+	ProductList
+} from './productList.component.js';
+import {
+	CartItem
+} from './productItem.component.js';
+
+// Utils
 import {
 	loadProducts
 } from './ajaxHelper.js';
@@ -12,26 +19,10 @@ class ModalFooter extends React.Component {
 		this.handleCheckout = this.handleCheckout.bind(this);
 	}
 
+	// Send Ajax to server to validate products'price and quantity 
+	// Notify clients of any changes on products and cart
 	handleCheckout() {
-		// Do something then close modal
-
-		/* 
-		When a user click CheckOut
-		1: When the user clicks on checkout, you will need to make sure that the products are still available in the back store and the prices are updated.
-		2: when the user clicks on checkout, you will alert the user with the message showing that you are confirming the final total price as well as the availability.
-			- If there is any price change, you will need to alert the user for each product for which the price changed.
-			- For any of the selected products, if the quantity that the user ordered is not available any more, you will change the number of products in the cart to the now available quantity.
-				- You will also need to alert the user about the updated quantity as well.
-		3. The cart variable should also be updated to reflect the revised prices/quantity. 
-		4. you will alert the user with the total amount due (based on the cart's contents).
-		*/
-
 		loadProducts(this.props.serverURL, 5, this.props.setProducts);
-		console.log('lets go modal footer. \n ');
-		let status = confirm('done with purchase?');
-		if (status) {
-			this.props.closeModal()
-		};
 	}
 
 	render() {
@@ -55,6 +46,7 @@ class ModalHeader extends React.Component {
 		this.handleClick = this.handleClick.bind(this);
 	}
 
+	// Close Modal when user click X on right top
 	handleClick() {
 		this.props.closeModal();
 	}
@@ -75,44 +67,57 @@ class ModalHeader extends React.Component {
 
 class ModalBody extends React.Component {
 
-	componentWillUpdate(nextProps, nextState) {
-		console.log('what is nextState: \n');
-		console.log(nextState);
-		console.log('oldProps: \n');
-		console.log(this.props);
-		console.log('nextProps:  \n');
-		console.log(nextProps);
+	// On Ajax Update:
+	// Calculate the difference before old products and next products
+	// Notify client on how it affects the cart
+	componentWillReceiveProps(nextProps) {
+		// console.log('BEFORE oldProps isUpdated status: ' + this.props.isUpdated);
+		// console.log('BEFORE nextProps isUpdated status: ' + nextProps.isUpdated);
+		if (nextProps.isUpdated) {
+			this.props.resetIsUpdated();
+			const prevProducts = this.props.products;
+			const cart = this.props.cart;
+			this.cartDiff = this.props.getCartChange(cart, prevProducts, nextProps.products);
+			this.productDiff = this.props.getProductsChange(prevProducts, nextProps.products);
+		}
+	}
 
-		// Calculate the difference before old products and next products
-		// See how it affects the cart
-		const prevProducts = this.props.products;
-		const cart = this.props.cart;
-		this.cartDiff = this.props.getCartChange(cart, prevProducts, nextProps.products);
-		this.productDiff = this.props.getProductsChange(prevProducts, nextProps.products);
+	// Notify Users of the change and ask if he still want to continue the purchase
+	componentDidUpdate(prevProps, prevState) {
+		// console.log('AFTER: prevProps isUpdated status: ' + prevProps.isUpdated);
+		// console.log('AFTER: this isUpdated status ' + this.props.isUpdated);
+		if (this.props.isUpdated) {
+			const message = this.cartDiff + ' \n ' + this.productDiff;
+			let status = confirm(message);
+			if (status) {
+				this.props.closeModal();
+			};
+		}
 	}
 
 	render() {
 		const products = this.props.products;
 		const cart = this.props.cart;
+		const isUpdated = this.props.isUpdated;
 		let orderItems = {};
 
 		for (let productName in cart) {
 			orderItems[productName] = products[productName];
 		}
-
-		// TODO: display cart change as well as products change
-
 		return (
 			<div className="modalBody">
 				<ProductList 
+					itemType={CartItem}
 					products={orderItems}
 			        cart={cart}
 			        addToCart={this.props.addToCart}
 			        removeFromCart={this.props.removeFromCart}
-			        isEmpty={this.props.isEmpty}
 				/>
-				 <p> {this.cartDiff? 'Cart has changed' + this.cartDiff : null} </p>
-				 <p> {this.productDiff? 'Updated products' + this.productDiff  : null}  </p>
+				{isUpdated ||	
+				<div id="updateInfo">
+					<p> {this.cartDiff? 'Cart has changed: \n' + this.cartDiff : null} </p>
+					<p> {this.productDiff? 'Updated products: \n' + this.productDiff  : null}  </p>
+				</div>}
 			</div>
 		);
 	}
@@ -133,12 +138,13 @@ class ModalContent extends React.Component {
 			        cart={this.props.cart}
 			        addToCart={this.props.addToCart}
 					removeFromCart={this.props.removeFromCart}
-					isEmpty={this.props.isEmpty}
 					closeModal={this.props.closeModal}
 					getProductsChange={this.props.getProductsChange}
 					getCartChange={this.props.getCartChange}
 					getProductInfoChange={this.props.getProductInfoChange}
 					getTotalCost={this.props.getTotalCost}
+					resetIsUpdated={this.props.resetIsUpdated}
+					isUpdated={this.props.isUpdated}
 				/>
 				<ModalFooter 
 					closeModal={this.props.closeModal}
@@ -157,25 +163,22 @@ class Modal extends React.Component {
 		this.handleEscKey = this.handleEscKey.bind(this);
 	}
 
+	// Close Modal on ESC keyDown
 	handleEscKey(e) {
-		console.log(e);
 		if (e.keyCode == 27) {
 			this.props.closeModal();
 		}
 	}
 
+	// Remove KeyDown callback from the global document object
 	componentDidMount() {
-		// console.log('modal finished rendering');
-		// Set-up esc listener onKeyDown=ESC
-		// Bind to document
-		// this.escapeFunc = this.handleEscKey.call(this);
 		document.addEventListener('keydown',
 			this.handleEscKey,
 			false);
 	}
 
+	// Start KeyDown callback listening for ESC key press
 	componentWillUnmount() {
-		// console.log('Modal unmounting');
 		document.removeEventListener('keydown',
 			this.handleEscKey,
 			false);
@@ -190,7 +193,6 @@ class Modal extends React.Component {
 			        getTotalCost={this.props.getTotalCost}
 			        addToCart={this.props.addToCart}
 					removeFromCart={this.props.removeFromCart}
-					isEmpty={this.props.isEmpty}
 					closeModal={this.props.closeModal}
 					setProducts={this.props.setProducts}
 					serverURL={this.props.serverURL}
@@ -198,6 +200,8 @@ class Modal extends React.Component {
 					getCartChange={this.props.getCartChange}
 					getProductInfoChange={this.props.getProductInfoChange}
 					getTotalCost={this.props.getTotalCost}
+					isUpdated={this.props.isUpdated}
+					resetIsUpdated={this.props.resetIsUpdated}
 				/>
 			</div>
 		);
