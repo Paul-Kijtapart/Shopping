@@ -15,12 +15,14 @@ router.get('/products', function(req, res, next) {
 		};
 		console.log(data);
 		res.status(200).send(data);
+		res.end();
 	})
 });
 
 
 router.get('/', function(req, res) {
 	res.send('Hello World');
+	res.end();
 });
 
 

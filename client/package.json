@@ -2,7 +2,7 @@
   "name": "shopping",
   "version": "1.0.0",
   "description": "CPEN400 projects for fun",
-  "main": "app.js",
+  "main": "js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
@@ -12,10 +12,7 @@
   "author": "aornawat",
   "license": "MIT",
   "dependencies": {
-    "debug": "^2.4.4",
-    "express": "^4.14.0",
-    "mongodb": "^2.2.16",
-    "mongoose": "^4.7.3",
+    "debug": "^2.4.5",
     "normalize-scss": "^6.0.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
