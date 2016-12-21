@@ -1,6 +1,8 @@
 // Declare modules to be used here
 var express = require('express');
 var path = require('path');
+var morgan = require('morgan');
+var favicon = require('serve-favicon');
 
 // Dependencies:
 require('./models/models');
@@ -9,12 +11,26 @@ mongoose.connect('mongodb://localhost/ShoppingMall'); // TODO: add this db and c
 
 var app = express();
 
-// Allow clients to type url according to name here to access the public files
+// Functions executed every time the app receives a request.
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico'))); // uncomment after placing your favicon in /public
+app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'images')));
+app.use('/products', function(req, res, next) {
+	// console.log('Request URL:', req.originalUrl);
+	// console.log('Request baseURL:' + req.baseUrl);
+	// console.log('Request path: ', req.path);
 
-var routes = require('./routes/index');
+	next()
+}, function(req, res, next) {
+	// console.log('Request Type:', req.method)
+	next()
+});
 
-app.use('/', routes);
+// Bind routers to each path
+var products = require('./routes/products');
+var checkout = require('./routes/checkout');
+app.use('/products', products);
+app.use('/checkout', checkout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,7 +65,7 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-// START SERVER:
+// START SERVER=============================================================
 var debug = require('debug')('Shopping:server');
 var http = require('http');
 
@@ -71,7 +87,9 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(app.get('port'), function() {
+	console.log('Server is running at localhost:' + app.get('port'));
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
