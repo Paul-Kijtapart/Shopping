@@ -185,12 +185,12 @@ router.route('/name/:productName')
 		var productName = req.params.productName;
 		Product.remove({
 			name: productName
-		}, function(err, products) {
+		}, function(err, deleteStatus) {
 			if (err) {
 				console.error(err);
 			}
 			res.status(200);
-			res.json(products);
+			res.json(deleteStatus);
 		});
 	});
 

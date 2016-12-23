@@ -10,10 +10,12 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({
 	extended: false
 })
+router.use(urlencodedParser);
+router.use(jsonParser);
 
 // Database
 var mongoose = require('mongoose');
-var orders = mongoose.model('Order');
+var Order = mongoose.model('Order');
 
 /**
 1.	accept a JSON formatted object (cart) and 
@@ -22,9 +24,23 @@ var orders = mongoose.model('Order');
 2. also update your products table (Deduct the value in the products table according to cart) 
 3. Update clients on Updated products and re-set the cart.
 */
-router.post('/', urlencodedParser, jsonParser, function(req, res, next) {
-	res.send({
-		'checkout': 'checkout success'
+router.post('/', function(req, res, next) {
+	var cart = req.body;
+	Order.update({
+		_id: "1"
+	}, {
+		$set: {
+			cart: cart.cart,
+			total: cart.total
+		}
+	}, {
+		upsert: true
+	}, function(err, updateStatus) {
+		if (err) {
+			console.error(err);
+		}
+		res.status(200);
+		res.send(updateStatus);
 	});
 });
 

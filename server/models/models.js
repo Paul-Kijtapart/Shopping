@@ -10,6 +10,7 @@ var productSchema = new Schema({
 });
 
 var orderSchema = new Schema({
+	_id: Number,
 	cart: String,
 	total: Number
 });
