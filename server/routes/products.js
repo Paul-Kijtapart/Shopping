@@ -1,63 +1,197 @@
 var express = require('express');
 var router = express.Router();
-var getAll = require('../db.query');
 
-/*
-PRICE RANGE INPUT
-1. 	Add price filters to your /products endpoint to 
-	allow users to retrieve all products 
-	between a specified price range (inclusive)
-
-2.	need to carefully consider checking erroneous values in your filters - 
-	if an erroneous filter is supplied, an error response with an appropriate HTTP error code should be returned.
-
-a: 	If no filters are supplied to the GET products endpoint, all products should be returned in the response. 
-b: 	If filters are supplied, a subset of the products should be returned according to the conditions.
-*/
-
+// Database 
+var mongoose = require('mongoose');
+var Product = mongoose.model('Product');
 /**
 CATEGORY SELECTED
-1.	Examples include "Clothing" and "Stationary". 
-2.	Implement a filter on your server application to return products belonging to a certain cateogry 
-3.	and display only those products on the client side when interfacing with the navigation menu.
-
+1.	and display only those products on the client side when interfacing with the navigation menu.
 */
 
-// Price?minPrice=2&maxPrice=30
-
-// Send Products whose field matches the query category
-// otherwise send back all products
-router.get('/', function(req, res, next) {
-	// products.find(function(err, data) {
-	// 	if (err) {
-	// 		return console.error(err);
-	// 	};
-	// 	res.status(200).send(data);
-	// })
-
-	// console.log(getAll());
-	res.status(200).send(getAll());
-});
-
-// Send Products whose field matches the query category
-
-
-// Send Products with minPrice <= Product.price <= maxPrice
-router.get('/Price', function(req, res, next) {
+// Return products in given categories and price between minPrice and maxPrice
+router.get('/category/:category/price', function(req, res, next) {
+	var category = req.params.category;
 	var minPrice = req.query.minPrice;
 	var maxPrice = req.query.maxPrice;
 
-	if (!(maxPrice && minPrice)) {
-		res.status(200);
-		res.send('minPrice or maxPrice is missing.');
-	}
+	if (category) {
+		try {
+			category = JSON.parse(category);
+		} catch (err) {
+			console.log('category should be an array.');
+			console.error(err + "please check category url");
+		}
 
-	res.send({
-		minPrice: minPrice,
-		maxPrice: maxPrice
+		if (maxPrice && minPrice) {
+			console.log('Sending products with ' + category);
+			console.log('price between ' + minPrice + ' <= ' + 'price' + ' <= ' + maxPrice);
+			Product.find({
+				category: {
+					$in: category
+				},
+				price: {
+					$gte: minPrice,
+					$lte: maxPrice
+				}
+			}, function(err, products) {
+				if (err) {
+					console.error(err);
+				};
+				res.status(200);
+				res.json(products);
+			});
+		} else {
+			console.log('Sending products with ' + category);
+			Product.find({
+				category: {
+					$in: category
+				}
+			}, function(err, products) {
+				if (err) {
+					console.error(err);
+				}
+
+				res.status(200);
+				res.json(products);
+			});
+		}
+	} else {
+		// Looking at all products
+		console.log('category ' + category);
+		if (maxPrice && minPrice) {
+			console.log('Sending All products with price between ' + minPrice + ' <= ' + 'price' + ' <= ' + maxPrice);
+			Product.find({
+				price: {
+					$gte: minPrice,
+					$lte: maxPrice
+				}
+			}, function(err, products) {
+				if (err) {
+					console.error(err);
+				};
+				res.status(200);
+				res.json(products);
+			});
+		} else {
+			res.status(500);
+			var err = new Error('minPrice or maxPrice is missing.');
+			res.send({
+				status: err.status,
+				message: err.message,
+				error: err
+			});
+		}
+	}
+});
+
+// Send Products whose field matches the params category
+// otherwise send back all products
+router.get('/cateogry/:category', function(req, res, next) {
+	var category = req.params.category;
+	console.log('category: ' + category);
+	if (category) {
+		category = JSON.parse(category);
+		console.log('Sending products with ' + category);
+		Product.find({
+			category: {
+				$in: category
+			}
+		}, function(err, products) {
+			if (err) {
+				console.error(err);
+			}
+
+			res.status(200);
+			res.json(products);
+		});
+	} else {
+		console.log('Sending back all products');
+		Product.find(function(err, products) {
+			if (err) {
+				console.error(err);
+			};
+			res.status(200)
+			res.json(products);
+		});
+	}
+});
+
+// Send Products with minPrice <= Product.price <= maxPrice
+router.get('/price', function(req, res, next) {
+	var minPrice = req.query.minPrice;
+	var maxPrice = req.query.maxPrice;
+	console.log('price only');
+
+	if (maxPrice && minPrice) {
+		console.log('Sending All products with ' + minPrice + ' <= ' + 'price' + ' <= ' + maxPrice);
+		Product.find({
+			price: {
+				$gte: minPrice,
+				$lte: maxPrice
+			}
+		}, function(err, products) {
+			if (err) {
+				console.error(err);
+			};
+			res.status(200);
+			res.json(products);
+		});
+	} else {
+		res.status(500);
+		var err = new Error('minPrice or maxPrice is missing.');
+		res.send({
+			status: err.status,
+			message: err.message,
+			error: err
+		});
+	}
+});
+
+// Return all products in DB
+router.get('/', function(req, res, next) {
+	console.log('Sending all products');
+	Product.find({}, function(err, products) {
+		if (err) {
+			console.error(err);
+		}
+		res.status(200);
+		res.json(products);
 	});
 });
 
-
+// CRUD opertaions with productName
+router.route('/name/:productName')
+	.get(function(req, res, next) {
+		var productName = req.params.productName;
+		console.log(productName);
+		Product.findOne({
+			name: productName
+		}, function(err, product) {
+			if (err) {
+				console.error(err);
+			}
+			res.status(200);
+			res.json(product);
+		});
+	})
+	.post(function(req, res, next) {
+		console.log('TODO: add product with productName');
+	})
+	.put(function(req, res, next) {
+		console.log('TODO: Put: update with productName');
+	})
+	.delete(function(req, res, next) {
+		var productName = req.params.productName;
+		Product.remove({
+			name: productName
+		}, function(err, products) {
+			if (err) {
+				console.error(err);
+			}
+			res.status(200);
+			res.json(products);
+		});
+	});
 
 module.exports = router;

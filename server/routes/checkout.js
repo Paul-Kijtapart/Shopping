@@ -13,7 +13,7 @@ var urlencodedParser = bodyParser.urlencoded({
 
 // Database
 var mongoose = require('mongoose');
-var orders = mongoose.model('orders');
+var orders = mongoose.model('Order');
 
 /**
 1.	accept a JSON formatted object (cart) and 

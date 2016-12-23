@@ -5,7 +5,8 @@ var productSchema = new Schema({
 	name: String,
 	price: Number,
 	quantity: Number,
-	image: String
+	image: String,
+	category: [String]
 });
 
 var orderSchema = new Schema({
@@ -14,5 +15,5 @@ var orderSchema = new Schema({
 });
 
 // Map Schemas above to our existing collections in ShoppingMall Database
-mongoose.model('products', productSchema);
-mongoose.model('orders', orderSchema);
+mongoose.model('Product', productSchema);
+mongoose.model('Order', orderSchema);
