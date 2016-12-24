@@ -16,7 +16,10 @@ import {
 class ShoppingApp extends React.Component {
   constructor(props) {
     super(props);
+    let products = this.transformProducts(this.props.products);
+    console.log(products);
     this.state = {
+      category: [], // category to displayed
       inactiveTime: 0,
       cart: {
         'KeyboardCombo': 1,
@@ -24,7 +27,7 @@ class ShoppingApp extends React.Component {
         'PC1': 1
       },
       isModalOpen: false,
-      products: this.props.products,
+      products: products,
       isUpdated: false // Only become true when Ajax's call is successful
     };
 
@@ -37,6 +40,49 @@ class ShoppingApp extends React.Component {
     this.setProducts = this.setProducts.bind(this);
     this.updateProducts = this.updateProducts.bind(this)
     this.resetIsUpdated = this.resetIsUpdated.bind(this);
+    this.selectCategory = this.selectCategory.bind(this);
+    this.removeCategory = this.removeCategory.bind(this);
+  }
+
+  // Add tag to State's category
+  selectCategory(tag) {
+    this.setState(function(prevState) {
+      const prevCategory = prevState.category;
+      let category = [];
+      category = category.concat(prevCategory);
+      category.push(tag);
+      return {
+        category: category
+      }
+    });
+  }
+
+  // Remove tag from State's category
+  removeCategory(tag) {
+    this.setState(function(prevState) {
+      const prevCategory = prevState.category;
+      let index = prevCategory.indexOf(tag);
+      if (index === -1) {
+        return;
+      }
+      let category = [];
+      category = category.concat(prevCategory);
+      category.splice(index, 1);
+      return {
+        category: category
+      }
+    });
+  }
+
+  // Transform products received from server to the ones client can process
+  transformProducts(products) {
+    let result = {};
+    for (let product of products) {
+      product.url = product.image;
+      delete product.image;
+      result[product.name] = product;
+    }
+    return result;
   }
 
   // Update State's inactiveTimer and notify user when time limit is reached
@@ -146,6 +192,7 @@ class ShoppingApp extends React.Component {
   param: products - updated Products from server
   **/
   setProducts(products) {
+    products = transformProducts(products);
     this.setState(function(prevState) {
       const prevProducts = prevState.products;
       let cart = prevState.cart;
@@ -263,6 +310,9 @@ class ShoppingApp extends React.Component {
           cart={this.state.cart}
           addToCart={this.addToCart}
           removeFromCart={this.removeFromCart}
+          category={this.state.category}
+          selectCategory= {this.selectCategory}
+          removeCategory={this.removeCategory}
         />
         <Footer 
           inactiveTime={this.state.inactiveTime}
@@ -274,7 +324,8 @@ class ShoppingApp extends React.Component {
 
 // USER INPUT
 var timeLimit = 10000;
-var serverURL = 'https://cpen400a.herokuapp.com/products';
+
+var serverURL = 'http://localhost:3000/products';
 var numAttemps = 5;
 
 loadProducts(serverURL, numAttemps,

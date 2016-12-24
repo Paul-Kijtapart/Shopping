@@ -18,13 +18,6 @@ var mongoose = require('mongoose');
 var Order = mongoose.model('Order');
 var Product = mongoose.model('Product');
 
-// "{"Box1": 10}"
-
-/**
-2. also update your products table (Deduct the value in the products table according to cart) 
-3. Update clients on Updated products and re-set the cart.
-*/
-
 // Return true if an object is empty {}
 function isEmpty(obj) {
 	for (let prop in obj) {
