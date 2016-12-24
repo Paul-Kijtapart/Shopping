@@ -8,10 +8,15 @@ class NavigationItem extends React.Component {
 
   // Add Category Name to the state
   handleClick(e) {
-    const category = this.props.category;
     const tag = this.props.tag;
+    if (tag === 'all') {
+      this.props.clearCategory();
+      return;
+    }
+
+    const category = this.props.category;
     const index = category.indexOf(tag);
-    console.log(e.target.value);
+
     if (index === -1) {
       this.props.selectCategory(tag);
     } else {
@@ -37,8 +42,7 @@ class Navigation extends React.Component {
           <ul>
               <NavigationItem
                 category={this.props.category}
-                selectCategory= {this.props.selectCategory} 
-                removeCategory={this.props.removeCategory}
+                clearCategory={this.props.clearCategory}
                 description={"All Items"}
                 tag={"all"}
               />

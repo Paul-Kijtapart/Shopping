@@ -17,7 +17,6 @@ class ShoppingApp extends React.Component {
   constructor(props) {
     super(props);
     let products = this.transformProducts(this.props.products);
-    console.log(products);
     this.state = {
       category: [], // category to displayed
       inactiveTime: 0,
@@ -42,6 +41,7 @@ class ShoppingApp extends React.Component {
     this.resetIsUpdated = this.resetIsUpdated.bind(this);
     this.selectCategory = this.selectCategory.bind(this);
     this.removeCategory = this.removeCategory.bind(this);
+    this.clearCategory = this.clearCategory.bind(this);
   }
 
   // Add tag to State's category
@@ -71,6 +71,13 @@ class ShoppingApp extends React.Component {
       return {
         category: category
       }
+    });
+  }
+
+  // Remove all tags from the State's category
+  clearCategory() {
+    this.setState({
+      category: []
     });
   }
 
@@ -266,12 +273,12 @@ class ShoppingApp extends React.Component {
   updateProducts() {
     // Make Ajax to retrieve latest products
     loadProducts(this.props.serverURL, 5, this.setProducts);
-    console.log('after');
+    // console.log('after');
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('MAIN PrevState: ' + prevState.isUpdated);
-    console.log('MAIN Current: ' + this.state.isUpdated);
+    // console.log('MAIN PrevState: ' + prevState.isUpdated);
+    // console.log('MAIN Current: ' + this.state.isUpdated);
   }
 
   render() {
@@ -313,6 +320,7 @@ class ShoppingApp extends React.Component {
           category={this.state.category}
           selectCategory= {this.selectCategory}
           removeCategory={this.removeCategory}
+          clearCategory={this.clearCategory}
         />
         <Footer 
           inactiveTime={this.state.inactiveTime}

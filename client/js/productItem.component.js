@@ -51,12 +51,37 @@ class ProductItem extends React.Component {
   }
 }
 
-class CartItem extends React.Component {
+class ProductItemView extends React.Component {
 
+  // Return true if this item's tags matches any active tags in the activeCategory
+  isCategoryActive(category, activeCategory) {
+    for (let activeTag of activeCategory) {
+      for (let tag of category) {
+        if (tag === activeTag) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  render() {
+    const category = this.props.category;
+    const activeCategory = this.props.activeCategory;
+    console.log(activeCategory);
+    const isEmpty = activeCategory.length === 0 ? true : false;
+    let productItem = <ProductItem {...this.props} />
+    let itemDisplayed = isEmpty || this.isCategoryActive(category, activeCategory);
+    productItem = itemDisplayed ? productItem : null;
+
+    return productItem;
+  }
+}
+
+class CartItem extends React.Component {
   render() {
     const quantityOrdered = this.props.quantityOrdered;
     const quantityOrderedView = <p> # Ordered: {quantityOrdered} </p>;
-
 
     return (
       <ProductItem
@@ -71,5 +96,6 @@ class CartItem extends React.Component {
 
 export {
   ProductItem,
+  ProductItemView,
   CartItem
 };

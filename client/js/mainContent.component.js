@@ -5,7 +5,7 @@ import {
   ProductList
 } from './productList.component.js';
 import {
-  ProductItem
+  ProductItemView
 } from './productItem.component.js';
 
 // ShoppingApp > MainContent
@@ -17,9 +17,10 @@ class MainContent extends React.Component {
           category={this.props.category}
           selectCategory= {this.props.selectCategory}
           removeCategory={this.props.removeCategory}
+          clearCategory={this.props.clearCategory}
         />
         <ProductList 
-          itemType={ProductItem}
+          itemType={ProductItemView}
           products={this.props.products}
           cart={this.props.cart}
           addToCart={this.props.addToCart}

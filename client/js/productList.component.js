@@ -17,6 +17,7 @@ class ProductList extends React.Component {
     const cart = this.props.cart;
     const isCartEmpty = isEmpty(cart);
     const ItemType = this.props.itemType;
+    const activeCategory = this.props.category;
 
     let productItems = [];
 
@@ -33,7 +34,9 @@ class ProductList extends React.Component {
           price={product.price} 
           url={product.url}
           quantity={product.quantity}
+          category={product.category}
           quantityOrdered={quantityOrdered}
+          activeCategory={activeCategory}
           isCartEmpty={isCartEmpty}
           addToCart={this.props.addToCart}
           removeFromCart={this.props.removeFromCart}
