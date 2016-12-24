@@ -10,7 +10,8 @@ import {
 
 // Utils
 import {
-	loadProducts
+	loadProducts,
+	sendMessage
 } from './ajaxHelper.js';
 
 class ModalFooter extends React.Component {
@@ -90,6 +91,13 @@ class ModalBody extends React.Component {
 			const message = this.cartDiff + ' \n ' + this.productDiff;
 			let status = confirm(message);
 			if (status) {
+				// Make POST ajax sending cart to the server
+				let message = {};
+				message._id = 1;
+				message.cart = JSON.stringify(this.props.cart);
+				message.total = this.props.getTotalCost(this.props.cart, this.props.products);
+				console.log(message);
+				sendMessage("http://localhost:3000/checkout", message, 5);
 				this.props.closeModal();
 			};
 		}
@@ -145,6 +153,7 @@ class ModalContent extends React.Component {
 					getTotalCost={this.props.getTotalCost}
 					resetIsUpdated={this.props.resetIsUpdated}
 					isUpdated={this.props.isUpdated}
+					serverURL={this.props.serverURL}
 				/>
 				<ModalFooter 
 					closeModal={this.props.closeModal}

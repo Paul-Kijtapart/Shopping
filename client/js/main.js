@@ -147,7 +147,8 @@ class ShoppingApp extends React.Component {
 
   // Add a product into the cart
   addToCart(productName) {
-    const products = this.props.products;
+    const products = this.state.products;
+    console.log(products);
     let cart = this.state.cart;
     if (!(productName in cart)) {
       cart[productName] = 1;
@@ -199,7 +200,7 @@ class ShoppingApp extends React.Component {
   param: products - updated Products from server
   **/
   setProducts(products) {
-    products = transformProducts(products);
+    products = this.transformProducts(products);
     this.setState(function(prevState) {
       const prevProducts = prevState.products;
       let cart = prevState.cart;
@@ -282,7 +283,7 @@ class ShoppingApp extends React.Component {
   }
 
   render() {
-    console.log('main render');
+    // console.log('main render');
     return (
       <div id="shoppingApp">
         {this.state.isModalOpen? 

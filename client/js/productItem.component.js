@@ -68,7 +68,6 @@ class ProductItemView extends React.Component {
   render() {
     const category = this.props.category;
     const activeCategory = this.props.activeCategory;
-    console.log(activeCategory);
     const isEmpty = activeCategory.length === 0 ? true : false;
     let productItem = <ProductItem {...this.props} />
     let itemDisplayed = isEmpty || this.isCategoryActive(category, activeCategory);

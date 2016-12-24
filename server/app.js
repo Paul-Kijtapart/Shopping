@@ -15,15 +15,12 @@ var app = express();
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico'))); // uncomment after placing your favicon in /public
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'images')));
-app.use('/products', function(req, res, next) {
-	// console.log('Request URL:', req.originalUrl);
-	// console.log('Request baseURL:' + req.baseUrl);
-	// console.log('Request path: ', req.path);
 
-	next()
-}, function(req, res, next) {
-	// console.log('Request Type:', req.method)
-	next()
+// Allow local client to make HTTP request to local server
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
 });
 
 // Bind routers to each path

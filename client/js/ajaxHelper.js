@@ -68,7 +68,66 @@ var loadProducts = function(serverURL, numAttemps = 1, func, timeout) {
   sendRequest();
 };
 
+// Send message to serverURL via POST method. (message in the entity body)
+var sendMessage = function(serverURL, message, numAttemps = 1, func, timeout) {
+  var sendRequest = function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', serverURL);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    var reAttempt = function() {
+      numAttemps--;
+      console.log('numAttemps : ' + numAttemps);
+      if (numAttemps > 0) {
+        sendRequest();
+      };
+    };
+
+    xhr.timeout = timeout;
+    xhr.ontimeout = function() {
+      console.log('POST request has timeout.');
+      reAttempt();
+    };
+
+    xhr.onabort = function() {
+      console.log('POST request has been cancelled.');
+      reAttempt();
+    };
+
+    xhr.onerror = function() {
+      console.log('Error happened to the POST request.');
+      reAttempt();
+    };
+
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        if (xhr.response) {
+          console.log('onload 200: POST request success');
+          console.log(xhr.response);
+          if (func) {
+            func(xhr.response);
+          }
+        } else {
+          console.log('onload 200: POST request failed');
+          reAttempt();
+        }
+      } else {
+        console.log('onload NOT 200: POST request failed');
+        reAttempt();
+      }
+    };
+
+    if (numAttemps > 0) {
+      xhr.send(JSON.stringify(message));
+    } else {
+      alert('Please try again later');
+    };
+  };
+  sendRequest();
+};
+
 
 export {
-  loadProducts
+  loadProducts,
+  sendMessage
 };

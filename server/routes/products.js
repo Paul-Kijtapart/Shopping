@@ -150,8 +150,6 @@ router.get('/price', function(req, res, next) {
 
 // Return all products in DB
 router.get('/', function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	console.log('Sending all products');
 	Product.find({}, function(err, products) {
 		if (err) {
