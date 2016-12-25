@@ -166,10 +166,9 @@ class ShoppingApp extends React.Component {
 
   // Start the inactiveTimer after first render
   componentDidMount() {
-    // this.interval = setInterval(
-    //   () => this.tick(),
-    //   1000);
-
+    this.interval = setInterval(
+      () => this.tick(),
+      1000);
   }
 
   // Stop the inactiveTimer after remove this app
