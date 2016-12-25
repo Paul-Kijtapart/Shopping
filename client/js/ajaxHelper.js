@@ -17,14 +17,12 @@ var loadProducts = function(serverURL, numAttemps = 1, func, timeout) {
       if (xhr.status === 200) {
         if (xhr.response) {
           console.log('onload 200: success');
-          // console.log(xhr.response);
           func(xhr.response);
         } else {
           console.log('onload 200: failed');
           reAttempt();
         };
       } else {
-        // debugger;
         console.log('onload not 200. its ' + xhr.status);
         reAttempt();
       };

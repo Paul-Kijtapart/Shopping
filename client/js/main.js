@@ -41,7 +41,6 @@ class ShoppingApp extends React.Component {
 
     // functions for products
     this.setProducts = this.setProducts.bind(this);
-    this.updateProducts = this.updateProducts.bind(this)
     this.resetIsUpdated = this.resetIsUpdated.bind(this);
 
     // functions for category
@@ -339,19 +338,7 @@ class ShoppingApp extends React.Component {
     return totalChange;
   }
 
-  updateProducts() {
-    // Make Ajax to retrieve latest products
-    loadProducts(this.props.serverURL, 5, this.setProducts);
-    // console.log('after');
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('MAIN PrevState: ' + prevState.isUpdated);
-    // console.log('MAIN Current: ' + this.state.isUpdated);
-  }
-
   render() {
-    // console.log('main render');
     return (
       <div id="shoppingApp">
         {this.state.isModalOpen? 
