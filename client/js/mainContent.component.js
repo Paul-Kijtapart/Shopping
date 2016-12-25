@@ -15,9 +15,14 @@ class MainContent extends React.Component {
       <div id="mainContent">
         <Navigation 
           category={this.props.category}
-          selectCategory= {this.props.selectCategory}
-          removeCategory={this.props.removeCategory}
+          addTagToCategory= {this.props.addTagToCategory}
+          removeTagFromCategory={this.props.removeTagFromCategory}
           clearCategory={this.props.clearCategory}
+          priceRanges={this.props.priceRanges}
+          addPriceRanges={this.props.addPriceRanges}
+          removePriceRanges={this.props.removePriceRanges}
+          clearPriceRanges={this.props.clearPriceRanges}
+          containPriceRange={this.props.containPriceRange}
         />
         <ProductList 
           itemType={ProductItemView}
@@ -26,6 +31,7 @@ class MainContent extends React.Component {
           addToCart={this.props.addToCart}
           removeFromCart={this.props.removeFromCart}
           category={this.props.category}
+          priceRanges={this.props.priceRanges}
         />
       </div>
     );

@@ -65,12 +65,32 @@ class ProductItemView extends React.Component {
     return false;
   }
 
+  isPriceSelected(price, priceRanges) {
+    for (let range of priceRanges) {
+      const min = range[0];
+      const max = range[1];
+
+      if (price >= min && price <= max) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   render() {
     const category = this.props.category;
     const activeCategory = this.props.activeCategory;
-    const isEmpty = activeCategory.length === 0 ? true : false;
+    const isCategoryEmpty = activeCategory.length === 0 ? true : false;
+    const price = this.props.price;
+    const priceRanges = this.props.priceRanges;
+    const isPriceRangesEmpty = priceRanges.length === 0 ? true : false;
+
+    const itemDisplayed = (isCategoryEmpty || this.isCategoryActive(category, activeCategory)) &&
+      (isPriceRangesEmpty || this.isPriceSelected(price, priceRanges));
+
+
     let productItem = <ProductItem {...this.props} />
-    let itemDisplayed = isEmpty || this.isCategoryActive(category, activeCategory);
     productItem = itemDisplayed ? productItem : null;
 
     return productItem;

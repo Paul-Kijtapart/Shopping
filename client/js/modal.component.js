@@ -96,8 +96,8 @@ class ModalBody extends React.Component {
 				message._id = 1;
 				message.cart = JSON.stringify(this.props.cart);
 				message.total = this.props.getTotalCost(this.props.cart, this.props.products);
-				console.log(message);
 				sendMessage("http://localhost:3000/checkout", message, 5);
+				this.props.clearCart();
 				this.props.closeModal();
 			};
 		}
@@ -146,6 +146,7 @@ class ModalContent extends React.Component {
 			        cart={this.props.cart}
 			        addToCart={this.props.addToCart}
 					removeFromCart={this.props.removeFromCart}
+					clearCart={this.props.clearCart}
 					closeModal={this.props.closeModal}
 					getProductsChange={this.props.getProductsChange}
 					getCartChange={this.props.getCartChange}
@@ -202,6 +203,7 @@ class Modal extends React.Component {
 			        getTotalCost={this.props.getTotalCost}
 			        addToCart={this.props.addToCart}
 					removeFromCart={this.props.removeFromCart}
+					clearCart={this.props.clearCart}
 					closeModal={this.props.closeModal}
 					setProducts={this.props.setProducts}
 					serverURL={this.props.serverURL}

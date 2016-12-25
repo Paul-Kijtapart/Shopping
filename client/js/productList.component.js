@@ -40,6 +40,7 @@ class ProductList extends React.Component {
           isCartEmpty={isCartEmpty}
           addToCart={this.props.addToCart}
           removeFromCart={this.props.removeFromCart}
+          priceRanges={this.props.priceRanges}
         />
       );
     }

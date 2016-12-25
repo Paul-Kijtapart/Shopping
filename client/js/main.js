@@ -19,33 +19,95 @@ class ShoppingApp extends React.Component {
     let products = this.transformProducts(this.props.products);
     this.state = {
       category: [], // category to displayed
+      priceRanges: [],
       inactiveTime: 0,
-      cart: {
-        'KeyboardCombo': 1,
-        'Mice': 1,
-        'PC1': 1
-      },
+      cart: {},
       isModalOpen: false,
       products: products,
       isUpdated: false // Only become true when Ajax's call is successful
     };
 
-    // Bind Functions to this App
+    // functions for timeInactive
     this.setInactiveTime = this.setInactiveTime.bind(this);
+
+    // functions for cart
     this.addToCart = this.addToCart.bind(this);
     this.removeFromCart = this.removeFromCart.bind(this);
+    this.clearCart = this.clearCart.bind(this);
+
+    // functions for toggle modal
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
+
+    // functions for products
     this.setProducts = this.setProducts.bind(this);
     this.updateProducts = this.updateProducts.bind(this)
     this.resetIsUpdated = this.resetIsUpdated.bind(this);
-    this.selectCategory = this.selectCategory.bind(this);
-    this.removeCategory = this.removeCategory.bind(this);
+
+    // functions for category
+    this.addTagToCategory = this.addTagToCategory.bind(this);
+    this.removeTagFromCategory = this.removeTagFromCategory.bind(this);
     this.clearCategory = this.clearCategory.bind(this);
+
+    // functions for priceRanges
+    this.addPriceRanges = this.addPriceRanges.bind(this);
+    this.removePriceRanges = this.removePriceRanges.bind(this);
+    this.clearPriceRanges = this.clearPriceRanges.bind(this);
+    this.containPriceRange = this.containPriceRange.bind(this);
+  }
+
+  // Add a priceRange[minPrice, maxPrice] to priceRange state
+  addPriceRanges(range) {
+    this.setState(function(prevState) {
+      const prevPriceRanges = prevState.priceRanges;
+      let priceRanges = [];
+      priceRanges = priceRanges.concat(prevPriceRanges);
+      priceRanges.push(range);
+      return {
+        priceRanges: priceRanges
+      }
+    });
+  }
+
+  // Return true if priceRanges state contains given range
+  containPriceRange(priceRanges, range) {
+    // debugger;
+    for (let index in priceRanges) {
+      const current = priceRanges[index];
+      if ((current[0] === range[0]) && (current[1] === range[1])) {
+        return index;
+      }
+    }
+    return -1;
+  }
+
+  // Remove the given range from priceRanges
+  removePriceRanges(range) {
+    this.setState(function(prevState) {
+      const prevPriceRanges = prevState.priceRanges;
+      let priceRanges = [];
+      priceRanges = priceRanges.concat(prevPriceRanges);
+
+      const index = this.containPriceRange(priceRanges, range);
+      if (index > -1) {
+        priceRanges.splice(index, 1);
+      }
+
+      return {
+        priceRanges: priceRanges
+      }
+    });
+  }
+
+  //Clear priceRanges state
+  clearPriceRanges() {
+    this.setState({
+      priceRanges: []
+    })
   }
 
   // Add tag to State's category
-  selectCategory(tag) {
+  addTagToCategory(tag) {
     this.setState(function(prevState) {
       const prevCategory = prevState.category;
       let category = [];
@@ -58,7 +120,7 @@ class ShoppingApp extends React.Component {
   }
 
   // Remove tag from State's category
-  removeCategory(tag) {
+  removeTagFromCategory(tag) {
     this.setState(function(prevState) {
       const prevCategory = prevState.category;
       let index = prevCategory.indexOf(tag);
@@ -148,7 +210,6 @@ class ShoppingApp extends React.Component {
   // Add a product into the cart
   addToCart(productName) {
     const products = this.state.products;
-    console.log(products);
     let cart = this.state.cart;
     if (!(productName in cart)) {
       cart[productName] = 1;
@@ -162,6 +223,13 @@ class ShoppingApp extends React.Component {
     this.setState({
       inactiveTime: 0,
       cart: cart
+    });
+  }
+
+  // Empty the cart
+  clearCart() {
+    this.setState({
+      cart: {}
     });
   }
 
@@ -293,6 +361,7 @@ class ShoppingApp extends React.Component {
             getTotalCost={this.getTotalCost}
             addToCart={this.addToCart}
             removeFromCart={this.removeFromCart}
+            clearCart={this.clearCart}
             closeModal={this.closeModal}
             serverURL={this.props.serverURL}
             setProducts={this.setProducts}
@@ -319,9 +388,14 @@ class ShoppingApp extends React.Component {
           addToCart={this.addToCart}
           removeFromCart={this.removeFromCart}
           category={this.state.category}
-          selectCategory= {this.selectCategory}
-          removeCategory={this.removeCategory}
+          addTagToCategory= {this.addTagToCategory}
+          removeTagFromCategory={this.removeTagFromCategory}
           clearCategory={this.clearCategory}
+          priceRanges={this.state.priceRanges}
+          addPriceRanges={this.addPriceRanges}
+          removePriceRanges={this.removePriceRanges}
+          clearPriceRanges={this.clearPriceRanges}
+          containPriceRange={this.containPriceRange}
         />
         <Footer 
           inactiveTime={this.state.inactiveTime}

@@ -104,6 +104,7 @@
             #productList {
                 max-width: 100%;
                 display: inline-block;
+
                 ul {
                     li {
                         width: 180px;
@@ -176,7 +177,6 @@
             display: block;
             width: 200px;
             float: left;
-            background-color: #2e6680;
             color: white;
             margin-bottom: 20px;
             line-height: 50px;
@@ -191,6 +191,24 @@
             &:hover {
                 color: red;
                 background-color: #547c80;
+            }
+        }
+
+        .navigationCategoryItem {
+            background-color: #2e6680;
+        }
+
+        .navigationPriceItem {
+            background-color: #2e6680;
+        }
+
+        .navigationType {
+            background-color: darkgreen;
+
+            &:hover {
+                background-color: darkgreen;
+                color: white;
+                cursor: initial;
             }
         }
     }
