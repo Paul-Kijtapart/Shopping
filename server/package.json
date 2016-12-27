@@ -4,8 +4,10 @@
   "description": "shoppingserver",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "db": "npm run mongod & npm run mongo",
+    "mongod": "mongod",
+    "mongo": "mongo ShoppingMall db/initdb.js"
   },
   "author": "aornawat",
   "license": "MIT",
