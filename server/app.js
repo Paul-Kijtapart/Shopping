@@ -3,18 +3,28 @@ var express = require('express');
 var path = require('path');
 var morgan = require('morgan');
 var favicon = require('serve-favicon');
+var session = require('express-session');
+var flash = require('connect-flash');
 
 // Dependencies:
 require('./models/models');
+
+// Database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/ShoppingMall'); // TODO: add this db and collections
+mongoose.connect('mongodb://localhost/ShoppingMall');
 
 var app = express();
 
 // Functions executed every time the app receives a request.
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico'))); // uncomment after placing your favicon in /public
-app.use(morgan('dev'));
+var bodyParser = require('body-parser'); // Need this to transform POST's entity body to easier authenticate with passport
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+app.use(morgan('dev')); // Log all the HTTP requests
 app.use(express.static(path.join(__dirname, 'images')));
+app.use(flash()); // Need this for flashMessage on passport's authentication
 
 // Allow local client to make HTTP request to local server
 app.use(function(req, res, next) {
@@ -23,11 +33,36 @@ app.use(function(req, res, next) {
 	next();
 });
 
+// Authenticate Request
+var passport = require('passport');
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		secure: true
+	}
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+var initPassport = require('./passport-init');
+initPassport(passport);
+
 // Bind routers to each path
+var authenticate = require('./routes/authenticate')(passport);
 var products = require('./routes/products');
 var checkout = require('./routes/checkout');
 app.use('/products', products);
 app.use('/checkout', checkout);
+app.use('/auth', authenticate);
+
+// Development TEMP
+app.use(function(req, res, next) {
+	console.log('Cookies: ', req.cookies);
+	next();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

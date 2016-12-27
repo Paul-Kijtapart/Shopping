@@ -15,6 +15,12 @@ var orderSchema = new Schema({
 	total: Number
 });
 
+var userSchema = new Schema({
+	username: String,
+	password: String
+});
+
 // Map Schemas above to our existing collections in ShoppingMall Database
 mongoose.model('Product', productSchema);
 mongoose.model('Order', orderSchema);
+mongoose.model('User', userSchema);

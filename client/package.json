@@ -5,9 +5,8 @@
   "main": "js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
     "build": "babel js/main.js --watch --out-file js/main-compiled.js --presets react",
-    "webpack": "webpack"
+    "start": "webpack"
   },
   "author": "aornawat",
   "license": "MIT",

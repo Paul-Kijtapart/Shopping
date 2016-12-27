@@ -1,18 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-// Parse Request object before handlers start working
-var bodyParser = require('body-parser');
-// create application/json parser
-var jsonParser = bodyParser.json()
-
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({
-	extended: false
-})
-router.use(urlencodedParser);
-router.use(jsonParser);
-
 // Database
 var mongoose = require('mongoose');
 var Order = mongoose.model('Order');
@@ -41,6 +29,8 @@ router.get('/', function(req, res, next) {
 
 // Update orders and products collections on user's checkout
 router.post('/', function(req, res, next) {
+	console.log('req user is ' + req.user);
+	console.log(req.user);
 	var cart = req.body;
 	if (isEmpty(cart)) {
 		res.json({
@@ -66,7 +56,6 @@ router.post('/', function(req, res, next) {
 		});
 
 		// Update the product collection
-		// console.log(cart);
 		var cart = JSON.parse(cart.cart);
 		for (let productName in cart) {
 			Product.update({

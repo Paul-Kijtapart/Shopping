@@ -91,6 +91,7 @@ db.runCommand({
 db.runCommand({
 	insert: 'users',
 	documents: [{
-		"token": "Xoe2inasd"
+		"username": "admin",
+		"password": "admin"
 	}]
 });
