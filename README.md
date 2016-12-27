@@ -11,6 +11,7 @@ npm install
 ### Run Locally
 ***Make sure you have [MongoDB](https://www.mongodb.com/download-center?filter=enterprise#enterprise) installed***
 ```
+npm run db
 cd server
 npm install
 npm start
