@@ -24,7 +24,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(morgan('dev')); // Log all the HTTP requests
 app.use(express.static(path.join(__dirname, 'images')));
-app.use(flash()); // Need this for flashMessage on passport's authentication
 
 // Allow local client to make HTTP request to local server
 app.use(function(req, res, next) {
@@ -35,15 +34,17 @@ app.use(function(req, res, next) {
 
 // Authenticate Request
 var passport = require('passport');
-var cookieParser = require('cookie-parser');
-app.use(cookieParser());
+app.use(flash()); // Need this for flashMessage on passport's authentication
+// required for passport session
 app.use(session({
-	secret: 'keyboard cat',
-	resave: false,
+	secret: 'sshhh',
 	saveUninitialized: true,
-	cookie: {
-		secure: true
-	}
+	resave: true
+		// // using store session on MongoDB using express-session + connect
+		// store: new MongoStore({
+		// 	url: config.urlMongo,
+		// 	collection: 'sessions'
+		// })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,15 +55,24 @@ initPassport(passport);
 var authenticate = require('./routes/authenticate')(passport);
 var products = require('./routes/products');
 var checkout = require('./routes/checkout');
-app.use('/products', products);
-app.use('/checkout', checkout);
 app.use('/auth', authenticate);
 
-// Development TEMP
-app.use(function(req, res, next) {
-	console.log('Cookies: ', req.cookies);
-	next();
-});
+// Development Print:
+var isAuthenticated = function(req, res, next) {
+	if (req.isAuthenticated()) {
+		console.log('req authenticate status is true');
+		console.log('req id: ' + req.session.id);
+		next();
+	} else {
+		res.json({
+			messages: 'please login first.'
+		});
+	}
+};
+// app.use(isAuthenticated);
+app.use('/products', products);
+app.use('/checkout', checkout);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

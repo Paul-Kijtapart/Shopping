@@ -1,6 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+router.use(function(req, res, next) {
+	console.log(req.session.id);
+	next();
+});
+
 // Database
 var mongoose = require('mongoose');
 var Order = mongoose.model('Order');

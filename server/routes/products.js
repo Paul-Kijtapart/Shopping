@@ -4,10 +4,6 @@ var router = express.Router();
 // Database 
 var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
-/**
-CATEGORY SELECTED
-1.	and display only those products on the client side when interfacing with the navigation menu.
-*/
 
 // Return products in given categories and price between minPrice and maxPrice
 router.get('/category/:category/price', function(req, res, next) {
@@ -148,18 +144,6 @@ router.get('/price', function(req, res, next) {
 	}
 });
 
-// Return all products in DB
-router.get('/', function(req, res, next) {
-	console.log('Sending all products');
-	Product.find({}, function(err, products) {
-		if (err) {
-			console.error(err);
-		}
-		res.status(200);
-		res.json(products);
-	});
-});
-
 // CRUD opertaions with productName
 router.route('/name/:productName')
 	.get(function(req, res, next) {
@@ -193,5 +177,17 @@ router.route('/name/:productName')
 			res.json(deleteStatus);
 		});
 	});
+
+// Return all products in DB
+router.get('/', function(req, res, next) {
+	console.log('Sending all products');
+	Product.find({}, function(err, products) {
+		if (err) {
+			console.error(err);
+		}
+		res.status(200);
+		res.json(products);
+	});
+});
 
 module.exports = router;
