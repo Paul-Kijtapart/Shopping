@@ -1,0 +1,10 @@
+{
+	"name": "shopping",
+	"description": "a RESTful API server using Express 4",
+	"repository": "https://github.com/Paul-Kijtapart/Shopping.git",
+	"keywords": [
+		"node",
+		"express",
+		"static"
+	]
+}
