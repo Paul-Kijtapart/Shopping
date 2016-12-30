@@ -6,7 +6,7 @@ import {
 } from './productItem.component.js';
 import {
   isEmpty
-} from './Util.js';
+} from './../Util.js';
 
 
 // ShoppingApp > MainContent > ProductList

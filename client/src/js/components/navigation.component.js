@@ -19,17 +19,19 @@ class NavigationCategoryItem extends React.Component {
 
     if (index === -1) {
       this.props.addTagToCategory(tag);
-      e.target.style.backgroundColor = 'lightblue';
     } else {
       this.props.removeTagFromCategory(tag);
-      e.target.style.backgroundColor = '#2e6680';
     }
   }
 
   render() {
+    const tag = this.props.tag;
+    const category = this.props.category;
+    const index = category.indexOf(tag); 
+
     const description = this.props.description;
     return (
-      <li className="navigationCategoryItem" onClick={this.handleClick}>
+      <li className={index > -1? "navigationCategoryItemOn" : "navigationCategoryItemOff"} onClick={this.handleClick}>
         {description}
       </li>
     );
@@ -44,18 +46,20 @@ class NavigationPriceItem extends React.Component {
     const index = this.props.containPriceRange(priceRanges, range);
     if (index > -1) {
       this.props.removePriceRanges(range);
-      e.target.style.backgroundColor = '#2e6680';
     } else {
       this.props.addPriceRanges(range);
-      e.target.style.backgroundColor = 'lightblue';
     }
   }
 
   render() {
     const minPrice = this.props.minPrice;
     const maxPrice = this.props.maxPrice;
+    const priceRanges = this.props.priceRanges;
+    const range = [minPrice, maxPrice];
+    const index = this.props.containPriceRange(priceRanges, range);
+
     return (
-      <li className="navigationPriceItem" onClick={this.handleClick.bind(this)}>
+      <li className={index > -1? "navigationPriceItemOn" : "navigationPriceItemOff"} onClick={this.handleClick.bind(this)}>
         ${minPrice} - ${maxPrice}
       </li>
     );

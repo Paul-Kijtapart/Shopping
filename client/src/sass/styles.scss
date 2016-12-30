@@ -194,11 +194,11 @@
             }
         }
 
-        .navigationCategoryItem {
-            background-color: #2e6680;
+        .navigationCategoryItemOn, .navigationPriceItemOn {
+            background-color: lightblue;
         }
 
-        .navigationPriceItem {
+        .navigationCategoryItemOff, .navigationPriceItemOff {
             background-color: #2e6680;
         }
 

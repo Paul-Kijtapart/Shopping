@@ -12,7 +12,7 @@ import {
 import {
 	loadProducts,
 	sendMessage
-} from './ajaxHelper.js';
+} from './../ajaxHelper.js';
 
 class ModalFooter extends React.Component {
 	constructor(props) {

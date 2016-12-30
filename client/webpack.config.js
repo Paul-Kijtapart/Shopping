@@ -1,10 +1,10 @@
 var webpack = require('webpack');
 
 var config = {
-  entry: './js/main.js',
+  entry: './src/js/main.js',
   output: {
     filename: 'bundle.js',
-    path: __dirname + '/js'
+    path: 'dist/js'
   },
   watch: true,
   module: {

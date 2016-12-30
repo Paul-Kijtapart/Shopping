@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Componenets:
-import Header from './header.component.js';
-import CartInfo from './cartinfo.component.js';
-import MainContent from './mainContent.component.js';
-import Footer from './footer.component.js';
-import Modal from './modal.component.js';
+import Header from './components/header.component.js';
+import CartInfo from './components/cartinfo.component.js';
+import MainContent from './components/mainContent.component.js';
+import Footer from './components/footer.component.js';
+import Modal from './components/modal.component.js';
 
 // Util function
 import {
@@ -17,6 +17,7 @@ class ShoppingApp extends React.Component {
   constructor(props) {
     super(props);
     let products = this.transformProducts(this.props.products);
+    console.log(products);
     this.state = {
       category: [], // category to displayed
       priceRanges: [],
@@ -70,7 +71,7 @@ class ShoppingApp extends React.Component {
 
   // Return true if priceRanges state contains given range
   containPriceRange(priceRanges, range) {
-    // debugger;
+
     for (let index in priceRanges) {
       const current = priceRanges[index];
       if ((current[0] === range[0]) && (current[1] === range[1])) {
@@ -166,9 +167,9 @@ class ShoppingApp extends React.Component {
 
   // Start the inactiveTimer after first render
   componentDidMount() {
-    this.interval = setInterval(
-      () => this.tick(),
-      1000);
+    // this.interval = setInterval(
+    //   () => this.tick(),
+    //   1000);
   }
 
   // Stop the inactiveTimer after remove this app

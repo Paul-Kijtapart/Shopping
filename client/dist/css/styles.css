@@ -1,4 +1,4 @@
-/* line 9, ../sass/styles.scss */
+/* line 9, ../../src/sass/styles.scss */
 #header,
 #mainContent,
 #footer {
@@ -12,24 +12,24 @@
   color: #2e6680;
 }
 
-/* line 22, ../sass/styles.scss */
+/* line 22, ../../src/sass/styles.scss */
 #shoppingApp {
   position: relative;
 }
 
-/* line 26, ../sass/styles.scss */
+/* line 26, ../../src/sass/styles.scss */
 #cartInfo {
   position: absolute;
   right: 150px;
   top: 50px;
   z-index: 1;
 }
-/* line 32, ../sass/styles.scss */
+/* line 32, ../../src/sass/styles.scss */
 #cartInfo button {
   font-size: 18px;
 }
 
-/* line 37, ../sass/styles.scss */
+/* line 37, ../../src/sass/styles.scss */
 .modal {
   position: fixed;
   width: 100%;
@@ -39,7 +39,7 @@
   /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* line 47, ../sass/styles.scss */
+/* line 47, ../../src/sass/styles.scss */
 .modal .modalContent {
   position: relative;
   position: absolute;
@@ -51,19 +51,19 @@
   width: 80%;
   box-shadow: 0px 0px 10px #000000;
 }
-/* line 57, ../sass/styles.scss */
+/* line 57, ../../src/sass/styles.scss */
 .modal .modalContent .modalHeader {
   position: relative;
   padding: 2px 16px;
   background-color: #3b5998;
   color: white;
 }
-/* line 63, ../sass/styles.scss */
+/* line 63, ../../src/sass/styles.scss */
 .modal .modalContent .modalHeader #title {
   font-size: 22px;
   display: inline-block;
 }
-/* line 68, ../sass/styles.scss */
+/* line 68, ../../src/sass/styles.scss */
 .modal .modalContent .modalHeader button.closeModal {
   position: absolute;
   color: #000000;
@@ -75,14 +75,14 @@
   font-size: 18px;
   cursor: pointer;
 }
-/* line 80, ../sass/styles.scss */
+/* line 80, ../../src/sass/styles.scss */
 .modal .modalContent .modalHeader #cost {
   font-size: 18px;
   position: absolute;
   top: 10px;
   right: 50px;
 }
-/* line 88, ../sass/styles.scss */
+/* line 88, ../../src/sass/styles.scss */
 .modal .modalContent .modalBody {
   position: relative;
   text-align: center;
@@ -94,26 +94,26 @@
   float: left;
   width: 100%;
 }
-/* line 99, ../sass/styles.scss */
+/* line 99, ../../src/sass/styles.scss */
 .modal .modalContent .modalBody p {
   margin: 0px;
   padding: 0px;
 }
-/* line 104, ../sass/styles.scss */
+/* line 104, ../../src/sass/styles.scss */
 .modal .modalContent .modalBody #productList {
   max-width: 100%;
   display: inline-block;
 }
-/* line 109, ../sass/styles.scss */
+/* line 109, ../../src/sass/styles.scss */
 .modal .modalContent .modalBody #productList ul li {
   width: 180px;
 }
-/* line 115, ../sass/styles.scss */
+/* line 115, ../../src/sass/styles.scss */
 .modal .modalContent .modalBody #updateInfo {
   display: inline-block;
   max-width: 100%;
 }
-/* line 121, ../sass/styles.scss */
+/* line 121, ../../src/sass/styles.scss */
 .modal .modalContent .modalFooter {
   position: absolute;
   bottom: 0;
@@ -122,11 +122,11 @@
   margin-top: 10px;
   width: 100%;
 }
-/* line 129, ../sass/styles.scss */
+/* line 129, ../../src/sass/styles.scss */
 .modal .modalContent .modalFooter p {
   margin: 0;
 }
-/* line 133, ../sass/styles.scss */
+/* line 133, ../../src/sass/styles.scss */
 .modal .modalContent .modalFooter #checkout {
   position: absolute;
   right: 10px;
@@ -135,7 +135,7 @@
   cursor: pointer;
 }
 
-/* line 144, ../sass/styles.scss */
+/* line 144, ../../src/sass/styles.scss */
 #logo,
 #welcomeBanner {
   height: 100px;
@@ -144,7 +144,7 @@
   text-align: center;
 }
 
-/* line 152, ../sass/styles.scss */
+/* line 152, ../../src/sass/styles.scss */
 #logo {
   float: left;
   width: 200px;
@@ -155,24 +155,24 @@
   color: white;
 }
 
-/* line 162, ../sass/styles.scss */
+/* line 162, ../../src/sass/styles.scss */
 #welcomeBanner {
   float: right;
   width: 780px;
   color: #2e6680;
 }
 
-/* line 168, ../sass/styles.scss */
+/* line 168, ../../src/sass/styles.scss */
 #navigationMenu {
   float: left;
   width: 200px;
 }
-/* line 172, ../sass/styles.scss */
+/* line 172, ../../src/sass/styles.scss */
 #navigationMenu ul {
   list-style: none;
   padding: 0px;
 }
-/* line 176, ../sass/styles.scss */
+/* line 176, ../../src/sass/styles.scss */
 #navigationMenu ul li {
   display: block;
   width: 200px;
@@ -188,42 +188,42 @@
   border-radius: 5px;
   cursor: pointer;
 }
-/* line 191, ../sass/styles.scss */
+/* line 191, ../../src/sass/styles.scss */
 #navigationMenu ul li:hover {
   color: red;
   background-color: #547c80;
 }
-/* line 197, ../sass/styles.scss */
-#navigationMenu ul .navigationCategoryItem {
+/* line 197, ../../src/sass/styles.scss */
+#navigationMenu ul .navigationCategoryItemOn, #navigationMenu ul .navigationPriceItemOn {
+  background-color: lightblue;
+}
+/* line 201, ../../src/sass/styles.scss */
+#navigationMenu ul .navigationCategoryItemOff, #navigationMenu ul .navigationPriceItemOff {
   background-color: #2e6680;
 }
-/* line 201, ../sass/styles.scss */
-#navigationMenu ul .navigationPriceItem {
-  background-color: #2e6680;
-}
-/* line 205, ../sass/styles.scss */
+/* line 205, ../../src/sass/styles.scss */
 #navigationMenu ul .navigationType {
   background-color: darkgreen;
 }
-/* line 208, ../sass/styles.scss */
+/* line 208, ../../src/sass/styles.scss */
 #navigationMenu ul .navigationType:hover {
   background-color: darkgreen;
   color: white;
   cursor: initial;
 }
 
-/* line 218, ../sass/styles.scss */
+/* line 218, ../../src/sass/styles.scss */
 #mainContent > #productionList {
   float: right;
   width: 750px;
 }
 
-/* line 225, ../sass/styles.scss */
+/* line 225, ../../src/sass/styles.scss */
 #productList ul {
   padding: 0px;
   list-style: none;
 }
-/* line 229, ../sass/styles.scss */
+/* line 229, ../../src/sass/styles.scss */
 #productList ul li {
   display: block;
   float: left;
@@ -238,21 +238,21 @@
   text-align: center;
   position: relative;
 }
-/* line 243, ../sass/styles.scss */
+/* line 243, ../../src/sass/styles.scss */
 #productList ul li:hover {
   background-color: #aaaaaa;
   background-image: url("images/cart.png");
 }
-/* line 247, ../sass/styles.scss */
+/* line 247, ../../src/sass/styles.scss */
 #productList ul li:hover div.addOrRemove {
   background-color: rgba(0, 0, 0, 0.5);
   display: block;
 }
-/* line 252, ../sass/styles.scss */
+/* line 252, ../../src/sass/styles.scss */
 #productList ul li:hover .price {
   display: block;
 }
-/* line 257, ../sass/styles.scss */
+/* line 257, ../../src/sass/styles.scss */
 #productList ul li .product {
   height: 200px;
   max-width: 200px;
@@ -260,7 +260,7 @@
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 265, ../sass/styles.scss */
+/* line 265, ../../src/sass/styles.scss */
 #productList ul li .price {
   background-color: black;
   color: white;
@@ -281,7 +281,7 @@
   border-bottom-left-radius: 5px;
   text-align: center;
 }
-/* line 285, ../sass/styles.scss */
+/* line 285, ../../src/sass/styles.scss */
 #productList ul li div.addOrRemove {
   overflow: hidden;
   position: absolute;
@@ -290,14 +290,14 @@
   height: 170px;
   display: none;
 }
-/* line 293, ../sass/styles.scss */
+/* line 293, ../../src/sass/styles.scss */
 #productList ul li div.addOrRemove .cart {
   width: inherit;
   height: inherit;
   opacity: 0.5;
   z-index: 0;
 }
-/* line 300, ../sass/styles.scss */
+/* line 300, ../../src/sass/styles.scss */
 #productList ul li div.addOrRemove button.add {
   background-color: green;
   color: white;
@@ -309,7 +309,7 @@
   cursor: pointer;
   box-shadow: 0px 0px 3px orange;
 }
-/* line 312, ../sass/styles.scss */
+/* line 312, ../../src/sass/styles.scss */
 #productList ul li div.addOrRemove button.remove {
   background-color: red;
   color: white;
